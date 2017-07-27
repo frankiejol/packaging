@@ -18,6 +18,10 @@
 %global with_bundled 0
 # Build with debug info rpm
 %global with_debug 0
+# Run tests in check section
+%global with_check 1
+# Generate unit-test rpm
+%global with_unit_test 1
 
 %if 0%{?with_debug}
 %global _dwz_low_mem_die_limit 0
@@ -100,8 +104,41 @@ for file in $(find . \( -iname "*.go" -or -iname "*.s" \) \! -iname "*_test.go")
 done
 %endif
 
+# testing files for this project
+%if 0%{?with_unit_test} && 0%{?with_devel}
+install -d -p %{buildroot}/%{gopath}/src/%{import_path}/
+# find all *_test.go files and generate unit-test-devel.file-list
+for file in $(find . -iname "*_test.go") ; do
+    dirprefix=$(dirname $file)
+    install -d -p %{buildroot}/%{gopath}/src/%{import_path}/$dirprefix
+    cp -pav $file %{buildroot}/%{gopath}/src/%{import_path}/$file
+    echo "%%{gopath}/src/%%{import_path}/$file" >> unit-test-devel.file-list
+
+    while [ "$dirprefix" != "." ]; do
+        echo "%%dir %%{gopath}/src/%%{import_path}/$dirprefix" >> devel.file-list
+        dirprefix=$(dirname $dirprefix)
+    done
+done
+%endif
+
 %if 0%{?with_devel}
 sort -u -o devel.file-list devel.file-list
+%endif
+
+%check
+%if 0%{?with_check} && 0%{?with_unit_test} && 0%{?with_devel}
+%if ! 0%{?with_bundled}
+export GOPATH=%{buildroot}/%{gopath}:%{gopath}
+%else
+# No dependency directories so far
+
+export GOPATH=%{buildroot}/%{gopath}:%{gopath}
+%endif
+
+%if ! 0%{?gotest:1}
+%global gotest go test
+%endif
+
 %endif
 
 #define license tag if not already defined
