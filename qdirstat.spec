@@ -28,7 +28,7 @@ This is a Qt-only port of the old Qt3/KDE3-based KDirStat, now based on the
 
 %build
 %{qmake_qt5}
-%make_build %{?_smp_mflags}
+%make_build
 
 
 %install
