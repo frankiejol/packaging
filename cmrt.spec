@@ -59,6 +59,7 @@ find %{buildroot} -regex ".*\.la$" | xargs rm -f --
 
 
 %files devel
+%license AUTHORS COPYING
 %{_includedir}/cm_rt.h
 %{_includedir}/cm_rt_linux.h
 %{_libdir}/lib%{name}.so
