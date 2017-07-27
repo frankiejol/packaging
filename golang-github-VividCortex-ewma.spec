@@ -20,14 +20,8 @@
 %global with_debug 0
 # Run tests in check section
 %global with_check 1
-# Generate unit-test rpm
-# Deactivating test on ppc64le s390x
-# See bug https://github.com/VividCortex/ewma/issues/14
-%ifarch ppc64le s390x
-%global with_unit_test 0
-%else
+# Run tests in check section
 %global with_unit_test 1
-%endif
 
 %if 0%{?with_debug}
 %global _dwz_low_mem_die_limit 0
@@ -43,18 +37,16 @@
 # https://github.com/VividCortex/ewma
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          4cc8cc5a2a44f01d31b303a7280e20e00a6eafdb
-%global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        0
-Release:        0.1.git%{shortcommit}%{?dist}
+Version:        1.1.1
+Release:        1%{?dist}
 Summary:        Exponentially Weighted Moving Average algorithms for Go
 # Detected licences
 # - MIT/X11 (BSD like) at 'LICENSE'
 License:        MIT
 URL:            https://%{provider_prefix}
-Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
+Source0:        https://%{provider_prefix}/archive/v%{version}.tar.gz#/%{repo}-%{version}.tar.gz
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
@@ -108,7 +100,7 @@ providing packages with %{import_path} prefix.
 %endif
 
 %prep
-%setup -q -n %{repo}-%{commit}
+%setup -q -n %{repo}-%{version}
 
 %build
 %install
@@ -186,6 +178,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.git4cc8cc5
+* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.1.1-1
 - First package for Fedora
 
