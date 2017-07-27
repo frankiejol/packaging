@@ -176,7 +176,7 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %files devel -f devel.file-list
 %license LICENSE
 %doc README PATENTS CONTRIBUTORS CONTRIBUTING.md AUTHORS
-%dir %{gopath}/src/golang.org
+%dir %{gopath}/src/golang.org/x
 %endif
 
 %if 0%{?with_unit_test} && 0%{?with_devel}
