@@ -406,7 +406,7 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %files devel -f devel.file-list
 %license LICENSE
 %doc README.md GettingStarted.md CONTRIBUTORS CONTRIBUTING.md AUTHORS
-%dir %{gopath}/src/google.golang.org
+%dir %{gopath}/src/google.golang.org/api
 %endif
 
 %if 0%{?with_unit_test} && 0%{?with_devel}

@@ -211,7 +211,7 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %files devel -f devel.file-list
 %license LICENSE
 %doc README.md CONTRIBUTING.md
-%dir %{gopath}/src/google.golang.org
+%dir %{gopath}/src/google.golang.org/appengine
 %endif
 
 %if 0%{?with_unit_test} && 0%{?with_devel}
