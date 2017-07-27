@@ -21,7 +21,13 @@
 # Run tests in check section
 %global with_check 1
 # Generate unit-test rpm
+# Deactivating test on ppc64le s390x
+# See bug https://github.com/VividCortex/ewma/issues/14
+%ifarch ppc64le s390x
+%global with_unit_test 0
+%else
 %global with_unit_test 1
+%endif
 
 %if 0%{?with_debug}
 %global _dwz_low_mem_die_limit 0
