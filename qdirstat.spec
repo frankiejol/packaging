@@ -7,8 +7,8 @@ License:        GPLv2
 URL:            https://github.com/shundhammer/qdirstat
 Source0:        https://github.com/shundhammer/qdirstat/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
-BuildRequires:  qt5-qtbase-devel
-BuildRequires:  zlib-devel
+BuildRequires:  pkgconfig(Qt5)
+BuildRequires:  pkgconfig(zlib)
 BuildRequires:  desktop-file-utils
 Requires:       qt5-qtbase
 
