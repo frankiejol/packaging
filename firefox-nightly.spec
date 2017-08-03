@@ -1,4 +1,4 @@
-%global commit0 65bbd0525acd0a981c3811b11e23cb057a06373d
+%global commit0 22f1bfd79da322bd1d3130a2af93c32cf9e7c4ba
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 # Use ALSA backend?
@@ -96,13 +96,13 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox-nightly
 Version:        56.0a1
-Release:        0.1.20170726git%{?pre_tag}%{?dist}
+Release:        0.3.20170729git%{shortcommit0}%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        https://github.com/mozilla/gecko-dev/archive/%{commit0}.tar.gz#/%{name}-%{version}.tar.gz
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20170726.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20170729.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
@@ -140,6 +140,8 @@ Patch225:        mozilla-1005640-accept-lang.patch
 #ARM run-time patch
 Patch226:        rhbz-1354671.patch
 Patch229:        firefox-nss-version.patch
+#Patch fixing crashreporter build
+Patch230:	 mozilla-1385667.patch
 
 # Upstream patches
 Patch304:        mozilla-1253216.patch
@@ -321,6 +323,7 @@ This package contains results of tests executed during build.
 %endif
 
 %patch229 -p1 -b .old
+%patch230 -p1 -b .1385667
 %patch304 -p1 -b .1253216
 %patch402 -p1 -b .1196777
 %patch406 -p1 -b .256180
@@ -515,16 +518,15 @@ export PREFIX='%{_prefix}'
 export LIBDIR='%{_libdir}'
 
 MOZ_SMP_FLAGS=-j1
-# Deactivating because build fails often
 # On x86 architectures, Mozilla can build up to 4 jobs at once in parallel,
 # however builds tend to fail on other arches when building in parallel.
-#%ifarch %{ix86} x86_64 ppc ppc64 ppc64le aarch64
-#[ -z "$RPM_BUILD_NCPUS" ] && \
-#     RPM_BUILD_NCPUS="`/usr/bin/getconf _NPROCESSORS_ONLN`"
-#[ "$RPM_BUILD_NCPUS" -ge 2 ] && MOZ_SMP_FLAGS=-j2
-#[ "$RPM_BUILD_NCPUS" -ge 4 ] && MOZ_SMP_FLAGS=-j4
-#[ "$RPM_BUILD_NCPUS" -ge 8 ] && MOZ_SMP_FLAGS=-j8
-#%endif
+%ifarch %{ix86} x86_64 ppc ppc64 ppc64le aarch64
+[ -z "$RPM_BUILD_NCPUS" ] && \
+     RPM_BUILD_NCPUS="`/usr/bin/getconf _NPROCESSORS_ONLN`"
+[ "$RPM_BUILD_NCPUS" -ge 2 ] && MOZ_SMP_FLAGS=-j2
+[ "$RPM_BUILD_NCPUS" -ge 4 ] && MOZ_SMP_FLAGS=-j4
+[ "$RPM_BUILD_NCPUS" -ge 8 ] && MOZ_SMP_FLAGS=-j8
+%endif
 
 make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS" MOZ_SERVICES_SYNC="1"
 
@@ -858,12 +860,15 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Wed Jul 26 2017 Robert-André Mauchin <zebob.m@gmail.com> - 56.0a1-0.1.20170726git
-- Update to 56.0a1-65bbd05git
+* Wed Jul 26 2017 Robert-André Mauchin <zebob.m@gmail.com> - 56.0a1-0.3.20170726git22f1bfd
+- Update to 56.0a1-20170729git22f1bfd
+
+* Wed Jul 26 2017 Robert-André Mauchin <zebob.m@gmail.com> - 56.0a1-0.2.20170726git65bbd05
+- Update to 56.0a1-20170726git65bbd05
 - Enable Stylo
 
-* Fri Jul 21 2017 Robert-André Mauchin <zebob.m@gmail.com> - 56.0a1-0.1.20170722git
-- Update to 56.0a1-051dc17git
+* Fri Jul 21 2017 Robert-André Mauchin <zebob.m@gmail.com> - 56.0a1-0.1.20170722git051dc17
+- Update to 56.0a1-20170722git051dc17
 
 * Tue Jun 13 2017 Jan Horak <jhorak@redhat.com> - 54.0-2
 - Update to 54.0 (B3)

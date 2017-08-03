@@ -1,29 +1,18 @@
-# Build project from bundled dependencies
-%global with_bundled 0
-# Build with debug info rpm
-%global with_debug 1
-# Run tests in check section
-%global with_check 1
-# Generate unit-test rpm
-%global with_unit_test 1
-
-%if 0%{?with_debug}
 %global _dwz_low_mem_die_limit 0
-%else
-%global debug_package   %{nil}
-%endif
 
 Name:           rclone
 Version:        1.37
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        rsync for cloud storage
 License:        MIT 
 URL:            http://rclone.org/
 Source0:        https://github.com/ncw/rclone/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
-BuildRequires:  gcc
-BuildRequires:  golang >= 1.5
-%if 0%{?with_check} && ! 0%{?with_bundled}
+# e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
+ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
+# If go_compiler is not set to 1, there is no virtual provide. Use golang instead.
+BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
+
 BuildRequires: golang(bazil.org/fuse)
 BuildRequires: golang(bazil.org/fuse/fs)
 BuildRequires: golang(github.com/Unknwon/goconfig)
@@ -43,7 +32,7 @@ BuildRequires: golang(github.com/jlaffaye/ftp)
 BuildRequires: golang(github.com/ncw/dropbox-sdk-go-unofficial/dropbox)
 BuildRequires: golang(github.com/ncw/dropbox-sdk-go-unofficial/dropbox/files)
 BuildRequires: golang(github.com/ncw/go-acd)
-BuildRequires: golang(github.com/ncw/swift)
+BuildRequires: golang(github.com/ncw/swift) >= 0-0.8.gite3042b2
 BuildRequires: golang(github.com/nsf/termbox-go)
 BuildRequires: golang(github.com/pkg/errors)
 BuildRequires: golang(github.com/pkg/sftp)
@@ -55,10 +44,10 @@ BuildRequires: golang(github.com/spf13/pflag)
 BuildRequires: golang(github.com/stretchr/testify/assert)
 BuildRequires: golang(github.com/stretchr/testify/require)
 BuildRequires: golang(github.com/xanzy/ssh-agent)
-BuildRequires: golang(golang.org/x/crypto/nacl/secretbox)
-BuildRequires: golang(golang.org/x/crypto/scrypt)
-BuildRequires: golang(golang.org/x/crypto/ssh)
-BuildRequires: golang(golang.org/x/crypto/ssh/terminal)
+BuildRequires: golang(golang.org/x/crypto/nacl/secretbox) >= 0-0.16.gite4e2799
+BuildRequires: golang(golang.org/x/crypto/scrypt) >= 0-0.16.gite4e2799
+BuildRequires: golang(golang.org/x/crypto/ssh) >= 0-0.16.gite4e2799
+BuildRequires: golang(golang.org/x/crypto/ssh/terminal) >= 0-0.16.gite4e2799
 BuildRequires: golang(golang.org/x/net/context)
 BuildRequires: golang(golang.org/x/net/html)
 BuildRequires: golang(golang.org/x/oauth2)
@@ -66,10 +55,9 @@ BuildRequires: golang(golang.org/x/oauth2/google)
 BuildRequires: golang(golang.org/x/sys/unix)
 BuildRequires: golang(golang.org/x/text/unicode/norm)
 BuildRequires: golang(golang.org/x/time/rate)
-BuildRequires: golang(google.golang.org/api/drive/v2)
-BuildRequires: golang(google.golang.org/api/googleapi)
-BuildRequires: golang(google.golang.org/api/storage/v1)
-%endif
+BuildRequires: golang(google.golang.org/api/drive/v2) >= 0-0.19.git77f162b
+BuildRequires: golang(google.golang.org/api/googleapi) >= 0-0.19.git77f162b
+BuildRequires: golang(google.golang.org/api/storage/v1) >= 0-0.19.git77f162b
 
 Requires:      golang(bazil.org/fuse)
 Requires:      golang(bazil.org/fuse/fs)
@@ -117,6 +105,7 @@ Requires:      golang(google.golang.org/api/drive/v2)
 Requires:      golang(google.golang.org/api/googleapi)
 Requires:      golang(google.golang.org/api/storage/v1)
 
+
 %description
 Rclone is a command line program to sync files and directories to and 
 from various cloud services.
@@ -125,7 +114,6 @@ from various cloud services.
 %prep
 %autosetup -p1 -n %{name}-%{version}
 
-%{__rm} -rf vendor
 
 %build
 mkdir -p ./_build/src/github.com/ncw/
@@ -142,78 +130,23 @@ gobuild -o rclone
 install -p -D -m 0755 ./rclone %{buildroot}%{_bindir}/rclone
 install -p -D -m 0644 ./rclone.1 %{buildroot}%{_mandir}/man1/rclone.1
 
-# testing files for this project
-%if 0%{?with_unit_test} && 0%{?with_devel}
-install -d -p %{buildroot}/%{gopath}/src/%{import_path}/
-# find all *_test.go files and generate unit-test-devel.file-list
-for file in $(find . -iname "*_test.go" | grep -v "vendor") ; do
-    dirprefix=$(dirname $file)
-    install -d -p %{buildroot}/%{gopath}/src/%{import_path}/$dirprefix
-    cp -pav $file %{buildroot}/%{gopath}/src/%{import_path}/$file
-    echo "%%{gopath}/src/%%{import_path}/$file" >> unit-test-devel.file-list
-
-    while [ "$dirprefix" != "." ]; do
-        echo "%%dir %%{gopath}/src/%%{import_path}/$dirprefix" >> devel.file-list
-        dirprefix=$(dirname $dirprefix)
-    done
-done
-%endif
-
-%check
-%if 0%{?with_check} && 0%{?with_unit_test}
-%if ! 0%{?with_bundled}
-export GOPATH=%{buildroot}/%{gopath}:%{gopath}
-%else
-# Since we aren't packaging up the vendor directory we need to link
-# back to it somehow. Hack it up so that we can add the vendor
-# directory from BUILD dir as a gopath to be searched when executing
-# tests from the BUILDROOT dir.
-ln -s ./ ./vendor/src # ./vendor/src -> ./vendor
-
-export GOPATH=%{buildroot}/%{gopath}:$(pwd)/vendor:%{gopath}
-%endif
-
-%if ! 0%{?gotest:1}
-%global gotest go test
-%endif
-
-%gotest %{import_path}/amazonclouddrive
-%gotest %{import_path}/b2
-%gotest %{import_path}/b2/api
-%gotest %{import_path}/box
-%gotest %{import_path}/cmd/cmount
-%gotest %{import_path}/cmd/mount
-%gotest %{import_path}/crypt
-%gotest %{import_path}/crypt/pkcs7
-%gotest %{import_path}/drive
-%gotest %{import_path}/dropbox
-%gotest %{import_path}/dropbox/dbhash
-%gotest %{import_path}/fs
-%gotest %{import_path}/ftp
-%gotest %{import_path}/googlecloudstorage
-%gotest %{import_path}/http
-%gotest %{import_path}/hubic
-%gotest %{import_path}/local
-%gotest %{import_path}/onedrive
-%gotest %{import_path}/pacer
-%gotest %{import_path}/s3
-%gotest %{import_path}/sftp
-%gotest %{import_path}/swift
-%gotest %{import_path}/yandex
-%endif
+%{__rm} -rf vendor
 
 #define license tag if not already defined
 %{!?_licensedir:%global license %doc}
 
+
 %files
 %license COPYING
-%doc RELEASE.md README.md MANUAL.md MAINTAINERS.md ISSUE_TEMPLATE.md CONTRIBUTING.md
+%doc RELEASE.md README.md MANUAL.md
 %{_bindir}/rclone
 %{_mandir}/man1/rclone.1*
 
 
 %changelog
-* Sun Jul 23 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.37.1
+* Fri Jul 28 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.37-2
+- Unbundled revision
+* Sun Jul 23 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.37-1
 - Update to version 1.37
 * Thu Jul 20 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.36-2
 - Update to Fedora Packaging Guidelines specification

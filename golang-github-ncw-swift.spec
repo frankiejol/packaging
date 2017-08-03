@@ -48,6 +48,8 @@ License:        MIT
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
+Patch0:         golang-github-ncw-swift_fix_struct_alignment.patch
+
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
 # If go_compiler is not set to 1, there is no virtual provide. Use golang instead.
@@ -104,6 +106,8 @@ providing packages with %{import_path} prefix.
 %prep
 %setup -q -n %{repo}-%{commit}
 
+%patch0 -p1 -b .fix_struct_alignment
+
 %build
 %install
 # source codes for building projects
@@ -156,7 +160,7 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %if ! 0%{?gotest:1}
-%global gotest go test
+%global gotest DEBUG=1 go test
 %endif
 
 %gotest %{import_path}
@@ -182,7 +186,7 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Fri Jul 28 2017 Robert-André Mauchin <zebob.m@gmal.com> - 0-0.8.gite3042b26
+* Fri Jul 28 2017 Robert-André Mauchin <zebob.m@gmal.com> - 0-0.8.gite3042b2
 - Bump to upstream e3042b26a510db220549150362f6733012148d45
   resolves: #1476281
 
