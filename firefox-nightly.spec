@@ -1,4 +1,4 @@
-%global commit0 22f1bfd79da322bd1d3130a2af93c32cf9e7c4ba
+%global commit0 e0883c892edefc349089257cb8020b9092d5983b 
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 # Use ALSA backend?
@@ -95,14 +95,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox-nightly
-Version:        56.0a1
-Release:        0.3.20170729git%{shortcommit0}%{?pre_tag}%{?dist}
+Version:        57.0a1
+Release:        0.1.20170805git%{shortcommit0}%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        https://github.com/mozilla/gecko-dev/archive/%{commit0}.tar.gz#/%{name}-%{version}.tar.gz
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20170729.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20170805.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
@@ -860,6 +860,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Aug 05 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.1.20170805gite0883c8
+- Update to 57.0a1-20170805gite0883c8
+
 * Wed Jul 26 2017 Robert-André Mauchin <zebob.m@gmail.com> - 56.0a1-0.3.20170726git22f1bfd
 - Update to 56.0a1-20170729git22f1bfd
 
