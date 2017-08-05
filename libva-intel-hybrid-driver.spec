@@ -5,7 +5,7 @@ Summary:        VA driver for Intel G45 & HD Graphics family
 
 License:        MIT
 URL:            https://github.com/01org/intel-hybrid-driver
-Source0:        https://github.com/01org/intel-hybrid-driver/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        https://github.com/01org/intel-hybrid-driver/archive/%{version}/%{name}-%{version}.tar.gz
 
 Patch0:         libva-intel-hybrid-driver-1.0.2_replace_obsolete_AC_PROG_LIBTOOL.patch
 
@@ -16,8 +16,8 @@ BuildRequires:  libtool
 BuildRequires:  pkgconfig(libdrm) >= 2.4.45
 BuildRequires:  pkgconfig(libva) >= 0.38
 BuildRequires:  pkgconfig(libcmrt) >= 0.10.0
-BuildRequires:  mesa-libEGL-devel
-BuildRequires:  wayland-devel
+BuildRequires:  pkgconfig(egl)
+BuildRequires:  pkgconfig(wayland-server)
 
 
 %description
@@ -37,7 +37,7 @@ autoreconf -vif
 
 %install
 %make_install 
-find %{buildroot} -regex ".*\.la$" | xargs rm -f --
+find %{buildroot} -name "*.la" -delete
 
 
 %post -p /sbin/ldconfig
