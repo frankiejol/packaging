@@ -37,7 +37,7 @@
 # https://github.com/ncw/swift
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
-%global commit          e3042b26a510db220549150362f6733012148d45
+%global commit          af59a5adcdb59d343cc10d09804a9cbfbc32d385
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-%{provider}-%{project}-%{repo}
@@ -48,7 +48,6 @@ License:        MIT
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
-Patch0:         golang-github-ncw-swift_fix_struct_alignment.patch
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
@@ -106,7 +105,6 @@ providing packages with %{import_path} prefix.
 %prep
 %setup -q -n %{repo}-%{commit}
 
-%patch0 -p1 -b .fix_struct_alignment
 
 %build
 %install
@@ -186,8 +184,8 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Fri Jul 28 2017 Robert-André Mauchin <zebob.m@gmal.com> - 0-0.8.gite3042b2
-- Bump to upstream e3042b26a510db220549150362f6733012148d45
+* Fri Jul 28 2017 Robert-André Mauchin <zebob.m@gmal.com> - 0-0.8.gitaf59a5a
+- Bump to upstream af59a5adcdb59d343cc10d09804a9cbfbc32d385
   resolves: #1476281
 
 * Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0-0.7.gitc54732e
