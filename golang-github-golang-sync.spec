@@ -39,10 +39,11 @@
 %global import_path     golang.org/x/sync
 %global commit          f52d1811a62927559de87708c8913c1650ce4f26
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
+%global commitdate      20170517
 
 Name:           golang-%{provider}-%{project}-%{repo}
 Version:        0
-Release:        0.1.git%{shortcommit}%{?dist}
+Release:        0.1.%{commitdate}.git%{shortcommit}%{?dist}
 Summary:        Go concurrency primitives
 # Detected licences
 # - BSD (3 clause) at 'LICENSE'
@@ -186,6 +187,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.gitf52d181
+* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20170517.gitf52d181
 - First package for Fedora
 

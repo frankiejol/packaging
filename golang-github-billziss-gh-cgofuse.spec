@@ -41,10 +41,11 @@
 %global import_path     %{provider_prefix}
 %global commit          35bcf037030dcadcd247618c75c00c6cd17482d7
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
+%global commitdate      20170616
 
 Name:           golang-%{provider}-%{project}-%{repo}
 Version:        0
-Release:        0.1.git%{shortcommit}%{?dist}
+Release:        0.1.%{commitdate}.git%{shortcommit}%{?dist}
 Summary:        Cross-platform FUSE library for Go
 # Detected licences
 # - MIT/X11 (BSD like) at 'License.txt'
@@ -161,9 +162,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %global gotest go test
 %endif
 
-# hackish: report the kernel version in the chroot
-modprobe --set-version $(rpm -q --queryformat "%{RPMTAG_VERSION}-%{RPMTAG_RELEASE}.%{RPMTAG_ARCH}\n" kernel-core) fuse
-
 %gotest %{import_path}/fuse
 %endif
 
@@ -185,6 +183,6 @@ modprobe --set-version $(rpm -q --queryformat "%{RPMTAG_VERSION}-%{RPMTAG_RELEAS
 %endif
 
 %changelog
-* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.git35bcf03
+* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20170616.git35bcf03
 - First package for Fedora
 

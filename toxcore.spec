@@ -1,6 +1,6 @@
 Name:           toxcore 
 Version:        0.1.9
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Peer to peer instant messenger
 
 License:        GPLv3
@@ -12,9 +12,6 @@ BuildRequires:  libtool
 BuildRequires:  pkgconfig(libsodium)
 BuildRequires:  pkgconfig(opus)
 BuildRequires:  pkgconfig(vpx)
-Requires:       libsodium
-Requires:       opus
-Requires:       libvpx
 
 
 %description
@@ -77,5 +74,8 @@ find %{buildroot} -regex ".*\.la$" | xargs rm -f --
 
 
 %changelog
+* Fri Aug 18 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.1.9-2
+- Fix Requires dependencies
+
 * Sat Jul 29 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.1.9-1
 - First RPM release

@@ -40,11 +40,11 @@
 %global import_path     bazil.org/fuse
 %global commit          371fbbdaa8987b715bdd21d6adc4c9b20155f748
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
-
+%global commitdate      20160811
 
 Name:           golang-bazil-fuse
 Version:        0
-Release:        0.1.git%{shortcommit}%{?dist}
+Release:        0.1.%{commitdate}.git%{shortcommit}%{?dist}
 Summary:        Go library for writing FUSE userspace filesystems
 License:        BSD
 URL:            https://%{provider_prefix}
@@ -188,7 +188,7 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.git371fbbd
+* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20160811.git371fbbd
 - First package for Fedora
 
 

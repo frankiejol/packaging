@@ -1,4 +1,4 @@
-%global commit0 e0883c892edefc349089257cb8020b9092d5983b 
+%global commit0 5a4357c7681aadd07dea689cb6b5f1e8831fff1f 
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 # Use ALSA backend?
@@ -96,13 +96,13 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox-nightly
 Version:        57.0a1
-Release:        0.1.20170805git%{shortcommit0}%{?pre_tag}%{?dist}
+Release:        0.1.20170812git%{shortcommit0}%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        https://github.com/mozilla/gecko-dev/archive/%{commit0}.tar.gz#/%{name}-%{version}.tar.gz
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20170805.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20170812.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
@@ -126,7 +126,6 @@ Patch26:        build-icu-big-endian.patch
 Patch27:        mozilla-1335250.patch
 Patch28:        build-1360521-missing-cheddar.patch
 Patch29:        build-big-endian.patch
-Patch30:        fedora-build.patch
 Patch31:        build-ppc64-s390x-curl.patch
 Patch32:        build-rust-ppc64le.patch
 
@@ -303,7 +302,6 @@ This package contains results of tests executed during build.
 %endif
 #%patch28 -p2 -b .1360521-missing-cheddar
 %patch29 -p1 -b .big-endian
-%patch30 -p1 -b .fedora-build
 %patch31 -p1 -b .ppc64-s390x-curl
 %patch32 -p1 -b .rust-ppc64le
 
@@ -860,6 +858,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Aug 12 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.1.20170805git5a4357c
+- Update to 57.0a1-20170812git5a4357c
+
 * Sat Aug 05 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.1.20170805gite0883c8
 - Update to 57.0a1-20170805gite0883c8
 

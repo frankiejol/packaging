@@ -39,10 +39,11 @@
 %global import_path     %{provider_prefix}
 %global commit          5d9f46f9862ae5f65e264e178de6ce2c41a32d40
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
+%global commitdate      20170530
 
 Name:           golang-%{provider}-%{project}-%{repo}
 Version:        0
-Release:        0.1.git%{shortcommit}%{?dist}
+Release:        0.1.%{commitdate}.git%{shortcommit}%{?dist}
 Summary:        An unofficial Go SDK for integrating with the Dropbox API v2
 # Detected licences
 # - MIT/X11 (BSD like) at 'LICENSE'
@@ -169,6 +170,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.git5d9f46f
+* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20170530.git5d9f46f
 - First package for Fedora
 

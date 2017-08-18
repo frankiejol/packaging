@@ -6,11 +6,14 @@ Summary:        Qt-based directory statistics
 License:        GPLv2
 URL:            https://github.com/shundhammer/qdirstat
 Source0:        https://github.com/shundhammer/qdirstat/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source1:        %{name}.appdata.xml
 
 BuildRequires:  pkgconfig(Qt5)
 BuildRequires:  pkgconfig(zlib)
+BuildRequires:  libappstream-glib
 BuildRequires:  desktop-file-utils
 Requires:       qt5-qtbase
+Requires:       hicolor-icon-theme
 
 
 %description
@@ -33,10 +36,12 @@ This is a Qt-only port of the old Qt3/KDE3-based KDirStat, now based on the
 
 %install
 %make_install INSTALL_ROOT=$RPM_BUILD_ROOT
+install -Dp -m 644 %{SOURCE1} %{buildroot}/%{_datadir}/appdata/%{name}.appdata.xml
 
 
 %check
 desktop-file-validate $RPM_BUILD_ROOT/%{_datadir}/applications/qdirstat.desktop
+appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{name}.appdata.xml
 
 
 %post
@@ -58,11 +63,12 @@ update-desktop-database &> /dev/null ||:
 
 %files
 %license LICENSE
-%doc %{_docdir}/%{name}/*
+%{_docdir}/%{name}/
 %{_bindir}/qdirstat
 %{_bindir}/qdirstat-cache-writer
-%{_datadir}/applications/qdirstat.desktop
-%{_datadir}/icons/hicolor/*/apps/qdirstat.png
+%{_datadir}/appdata/%{name}.appdata.xml
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/icons/hicolor/*/apps/%{name}.png
 
 
 %changelog

@@ -37,6 +37,10 @@
 # https://github.com/VividCortex/ewma
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
+# commit b24eb346a94c3ba12c1da1e564dbac1b498a77ce == version 1.1.1
+%global commit          b24eb346a94c3ba12c1da1e564dbac1b498a77ce
+%global shortcommit     %(c=%{commit}; echo ${c:0:7})
+%global commitdate      20170727
 
 Name:           golang-%{provider}-%{project}-%{repo}
 Version:        1.1.1
@@ -46,7 +50,7 @@ Summary:        Exponentially Weighted Moving Average algorithms for Go
 # - MIT/X11 (BSD like) at 'LICENSE'
 License:        MIT
 URL:            https://%{provider_prefix}
-Source0:        https://%{provider_prefix}/archive/v%{version}.tar.gz#/%{repo}-%{version}.tar.gz
+Source0:        https://%{provider_prefix}/archive/v%{version}/%{repo}-%{version}.tar.gz
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}

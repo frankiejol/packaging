@@ -39,10 +39,11 @@
 %global import_path     %{provider_prefix}
 %global commit          96a49aad3fc3889629f2eceb004927386884bd92
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
+%global commitdate      20170306
 
 Name:           golang-%{provider}-%{project}-%{repo}
 Version:        0
-Release:        0.1.git%{shortcommit}%{?dist}
+Release:        0.1.%{commitdate}.git%{shortcommit}%{?dist}
 Summary:        Go library for accessing the Amazon Cloud Drive
 # Detected licences
 # - ISC at 'LICENSE'
@@ -184,6 +185,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.git96a49aa
+* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20170306.git96a49aa
 - First package for Fedora
 

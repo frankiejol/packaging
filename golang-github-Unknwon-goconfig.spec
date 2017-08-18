@@ -39,10 +39,11 @@
 %global import_path     %{provider_prefix}
 %global commit          87a46d97951ee1ea20ed3b24c25646a79e87ba5d
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
+%global commitdate 	20161121
 
 Name:           golang-%{provider}-%{project}-%{repo}
 Version:        0
-Release:        0.1.git%{shortcommit}%{?dist}
+Release:        0.1.%{commitdate}.git%{shortcommit}%{?dist}
 Summary:        Configuration file parser for the Go Programming Language
 # Detected licences
 # - *No copyright* Apache (v2.0) at 'LICENSE'
@@ -129,15 +130,8 @@ done
 # testing files for this project
 %if 0%{?with_unit_test} && 0%{?with_devel}
 install -d -p %{buildroot}/%{gopath}/src/%{import_path}/
-# pack testdata files
-for file in $(find . -iname "*.ini") ; do
-    dirprefix=$(dirname $file)
-    install -d -p %{buildroot}/%{gopath}/src/%{import_path}/$dirprefix
-    cp -pav $file %{buildroot}/%{gopath}/src/%{import_path}/$file
-    echo "%%{gopath}/src/%%{import_path}/$file" >> unit-test-devel.file-list
-done
 # find all *_test.go files and generate unit-test-devel.file-list
-for file in $(find . -iname "*_test.go") ; do
+for file in $(find . -iname "*_test.go" -or -iname "testdata") ; do
     dirprefix=$(dirname $file)
     install -d -p %{buildroot}/%{gopath}/src/%{import_path}/$dirprefix
     cp -pav $file %{buildroot}/%{gopath}/src/%{import_path}/$file
@@ -189,6 +183,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.git87a46d9
+* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20161121.git87a46d9
 - First package for Fedora
 
