@@ -39,13 +39,14 @@
 # https://github.com/billziss-gh/cgofuse
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     %{provider_prefix}
+# commit b24eb346a94c3ba12c1da1e564dbac1b498a77ce == version 1.0.2
 %global commit          35bcf037030dcadcd247618c75c00c6cd17482d7
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 %global commitdate      20170616
 
 Name:           golang-%{provider}-%{project}-%{repo}
-Version:        0
-Release:        0.1.%{commitdate}.git%{shortcommit}%{?dist}
+Version:        1.0.2
+Release:        1%{?dist}
 Summary:        Cross-platform FUSE library for Go
 # Detected licences
 # - MIT/X11 (BSD like) at 'License.txt'
@@ -71,7 +72,6 @@ BuildArch:     noarch
 %endif
 
 
-Provides:      golang(%{import_path}/examples/shared) = %{version}-%{release}
 Provides:      golang(%{import_path}/fuse) = %{version}-%{release}
 
 %description devel
@@ -114,7 +114,7 @@ providing packages with %{import_path} prefix.
 install -d -p %{buildroot}/%{gopath}/src/%{import_path}/
 echo "%%dir %%{gopath}/src/%%{import_path}/." >> devel.file-list
 # find all *.go but no *_test.go files and generate devel.file-list
-for file in $(find . \( -iname "*.go" -or -iname "*.s" \) \! -iname "*_test.go") ; do
+for file in $(find . \( -iname "*.go" -or -iname "*.s" \) \! -path "*/examples/*" \! -iname "*_test.go") ; do
     dirprefix=$(dirname $file)
     install -d -p %{buildroot}/%{gopath}/src/%{import_path}/$dirprefix
     cp -pav $file %{buildroot}/%{gopath}/src/%{import_path}/$file
@@ -172,7 +172,7 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %if 0%{?with_devel}
 %files devel -f devel.file-list
 %license License.txt
-%doc README.md Changelog.md
+%doc README.md Changelog.md examples/
 %dir %{gopath}/src/%{provider}.%{provider_tld}/%{project}
 %endif
 
@@ -183,6 +183,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20170616.git35bcf03
+* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.0.2-1
 - First package for Fedora
 

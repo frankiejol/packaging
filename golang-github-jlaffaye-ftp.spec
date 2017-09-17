@@ -44,7 +44,7 @@
 
 Name:           golang-%{provider}-%{project}-%{repo}
 Version:        0
-Release:        0.1.%{commitdate}.git%{shortcommit}%{?dist}
+Release:        0.1.%{commitdate}git%{shortcommit}%{?dist}
 Summary:        A FTP client package for Go
 # Detected licences
 # - ISC at 'LICENSE'
@@ -184,6 +184,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20170721.git769512c
+* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20170721git769512c
 - First package for Fedora
 

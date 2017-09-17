@@ -1,5 +1,6 @@
-%global commit0 5a4357c7681aadd07dea689cb6b5f1e8831fff1f 
+%global commit0 71720207e1342b06090095c2cbf2aacf4d7ee3fa 
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commitdate  20170915
 
 # Use ALSA backend?
 %define alsa_backend      0
@@ -67,9 +68,9 @@
 %endif
 
 %if %{?system_nss}
-%global nspr_version 4.10.10
+%global nspr_version 4.17
 %global nspr_build_version %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
-%global nss_version 3.29.3
+%global nss_version 3.33
 %global nss_build_version %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
 %endif
 
@@ -96,13 +97,13 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox-nightly
 Version:        57.0a1
-Release:        0.1.20170812git%{shortcommit0}%{?pre_tag}%{?dist}
+Release:        0.7.%{commitdate}git%{shortcommit0}%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        https://github.com/mozilla/gecko-dev/archive/%{commit0}.tar.gz#/%{name}-%{version}.tar.gz
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20170812.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-%{commitdate}.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
@@ -138,12 +139,8 @@ Patch224:        mozilla-1170092.patch
 Patch225:        mozilla-1005640-accept-lang.patch
 #ARM run-time patch
 Patch226:        rhbz-1354671.patch
-Patch229:        firefox-nss-version.patch
-#Patch fixing crashreporter build
-Patch230:	 mozilla-1385667.patch
 
 # Upstream patches
-Patch304:        mozilla-1253216.patch
 Patch402:        mozilla-1196777.patch
 Patch406:        mozilla-256180.patch
 Patch407:        mozilla-1348576.patch
@@ -154,6 +151,9 @@ Patch413:        mozilla-1353817.patch
 
 # Debian patches
 Patch500:        mozilla-440908.patch
+    
+#CSD patch
+Patch600:       rb179444.patch
 
 %if %{?system_nss}
 BuildRequires:  pkgconfig(nspr) >= %{nspr_version}
@@ -194,7 +194,7 @@ BuildRequires:  libvpx-devel >= %{libvpx_version}
 %endif
 BuildRequires:  autoconf213
 BuildRequires:  pkgconfig(libpulse)
-BuildRequires:  pkgconfig(icu-i18n)
+BuildRequires:  pkgconfig(icu-i18n) >= 59.1
 BuildRequires:  pkgconfig(gconf-2.0)
 BuildRequires:  yasm
 BuildRequires:  llvm-devel
@@ -207,14 +207,6 @@ Requires:       nspr >= %{nspr_build_version}
 Requires:       nss >= %{nss_build_version}
 %endif
 
-%if 0%{?fedora} > 25
-# For early testing of rhbz#1400293 mozbz#1324096 on F26 and Rawhide,
-# temporarily require the specific NSS build with the backports.
-# Can be removed after firefox is changed to require NSS 3.30.
-BuildRequires:  nss-devel >= 3.29.1-2.1
-Requires:       nss >= 3.29.1-2.1
-%endif
-
 %if 0%{?fedora} < 26
 # Using Conflicts for p11-kit, not Requires, because on multi-arch
 # systems p11-kit isn't yet available for secondary arches like
@@ -223,9 +215,6 @@ Requires:       nss >= 3.29.1-2.1
 Conflicts: p11-kit < 0.23.2-3
 # Requires build with CKA_NSS_MOZILLA_CA_POLICY attribute
 Requires: ca-certificates >= 2017.2.11-1.1
-# Requires NSS build with backports from NSS 3.30
-BuildRequires:  nss-devel >= 3.29.3-1.1
-Requires:       nss >= 3.29.3-1.1
 %endif
 
 BuildRequires:  desktop-file-utils
@@ -320,9 +309,6 @@ This package contains results of tests executed during build.
 %patch226 -p1 -b .1354671
 %endif
 
-%patch229 -p1 -b .old
-%patch230 -p1 -b .1385667
-%patch304 -p1 -b .1253216
 %patch402 -p1 -b .1196777
 %patch406 -p1 -b .256180
 %ifarch %{arm}
@@ -334,7 +320,10 @@ This package contains results of tests executed during build.
 %patch413 -p1 -b .1353817
 
 # Debian extension patch
-%patch500 -p1 -b .440908
+%patch500 -p1 -b .179444
+
+#CSD patch
+%patch600 -p1 -b .440908
 
 # Patch for big endian platforms only
 %if 0%{?big_endian}
@@ -858,7 +847,22 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Sat Aug 12 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.1.20170805git5a4357c
+* Sat Sep 02 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.7.20170915git7172020
+- Update to 57.0a1-20170915git7172020
+
+* Sat Sep 02 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.6.20170910gitd71460b
+- Update to 57.0a1-20170910gitd71460b
+
+* Sat Sep 02 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.5.20170902gite377ab3
+- Update to 57.0a1-20170826gite377ab3
+
+* Sat Aug 26 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.4.20170826gitb818d73
+- Update to 57.0a1-20170826gitb818d73
+
+* Sun Aug 20 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.3.20170820git9359f5b
+- Update to 57.0a1-20170820git9359f5b
+
+* Sat Aug 12 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.2.20170812git5a4357c
 - Update to 57.0a1-20170812git5a4357c
 
 * Sat Aug 05 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.1.20170805gite0883c8

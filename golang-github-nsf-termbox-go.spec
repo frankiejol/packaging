@@ -43,7 +43,7 @@
 
 Name:           golang-%{provider}-%{project}-%{repo}
 Version:        0
-Release:        0.1.%{commitdate}.git%{shortcommit}%{?dist}
+Release:        0.1.%{commitdate}git%{shortcommit}%{?dist}
 Summary:        A minimalistic API which allows programmers to write text-based user interfaces
 # Detected licences
 # - MIT/X11 (BSD like) at 'LICENSE'
@@ -155,6 +155,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 
 
 %changelog
-* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20170710.git4ed959e
+* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20170710git4ed959e
 - First package for Fedora
 

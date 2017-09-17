@@ -32,7 +32,7 @@ BuildRequires: golang(github.com/jlaffaye/ftp)
 BuildRequires: golang(github.com/ncw/dropbox-sdk-go-unofficial/dropbox)
 BuildRequires: golang(github.com/ncw/dropbox-sdk-go-unofficial/dropbox/files)
 BuildRequires: golang(github.com/ncw/go-acd)
-BuildRequires: golang(github.com/ncw/swift) >= 0-0.8.gite3042b2
+BuildRequires: golang(github.com/ncw/swift) >= 0-0.8.gitaf59a5a
 BuildRequires: golang(github.com/nsf/termbox-go)
 BuildRequires: golang(github.com/pkg/errors)
 BuildRequires: golang(github.com/pkg/sftp)
@@ -120,10 +120,7 @@ mkdir -p ./_build/src/github.com/ncw/
 ln -s $(pwd) ./_build/src/github.com/ncw/rclone
 export GOPATH=$(pwd)/_build:%{gopath}
 
-# *** ERROR: No build ID note found in /.../BUILDROOT/etcd-2.0.0-1.rc1.fc22.x86_64/usr/bin/etcd
-function gobuild { go build -a -ldflags "-B 0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n')" -v -x "$@"; }
-
-gobuild -o rclone
+%gobuild -o rclone
 
 
 %install

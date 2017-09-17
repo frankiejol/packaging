@@ -1,11 +1,12 @@
 Name:           orion
-Version:        1.5.1
-Release:        2%{?dist}
+Version:        1.6.1
+Release:        1%{?dist}
 Summary:        QML/C++-written desktop client for Twitch.tv
 
 License:        GPLv3
 URL:            https://github.com/alamminsalo/orion
-Source0:        https://github.com/alamminsalo/orion/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        https://github.com/alamminsalo/orion/archive/v%{version}/%{name}-%{version}.tar.gz
+Source1:        %{name}.appdata.xml
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  pkgconfig(Qt5)
@@ -13,11 +14,12 @@ BuildRequires:  pkgconfig(Qt5QuickControls2)
 BuildRequires:  pkgconfig(Qt5Svg)
 BuildRequires:  pkgconfig(Qt5WebEngine)
 BuildRequires:  pkgconfig(Qt5Multimedia)
-Requires:       qt5-qtbase
-Requires:       qt5-qtquickcontrols2
-Requires:       qt5-qtsvg
-Requires:       qt5-qtwebengine
-Requires:       qt5-qtmultimedia
+BuildRequires:  libappstream-glib
+BuildRequires:  desktop-file-utils
+Requires:       hicolor-icon-theme
+
+#Depends on qt5-qt5webengine
+ExclusiveArch: %{qt5_qtwebengine_arches}
 
 
 %description
@@ -38,6 +40,7 @@ cd build
 %install
 install -p -D -m 755 build/orion $RPM_BUILD_ROOT%{_bindir}/orion
 install -p -D -m 644 distfiles/orion.svg $RPM_BUILD_ROOT%{_datadir}/icons/orion.svg
+install -p -D -m 644 %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/appdata/%{name}.appdata.xml
 
 desktop-file-install                                    \
 --remove-category="Games"                               \
@@ -47,13 +50,13 @@ desktop-file-install                                    \
 --dir=$RPM_BUILD_ROOT%{_datadir}/applications/          \
 distfiles/Orion.desktop
 
+appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/appdata/%{name}.appdata.xml
 
 %post
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache -q %{_datadir}/icons/hicolor;
 fi
-update-desktop-database &> /dev/null || :
 
 
 %postun
@@ -61,7 +64,6 @@ touch --no-create %{_datadir}/icons/hicolor
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache -q %{_datadir}/icons/hicolor;
 fi
-update-desktop-database &> /dev/null || :
 
 
 %posttrans
@@ -72,11 +74,14 @@ update-desktop-database &> /dev/null || :
 %license COPYING LICENSE.txt
 %doc README.md
 %{_bindir}/orion
-%{_datadir}/icons/orion.svg
+%{_datadir}/appdata/%{name}.appdata.xml
 %{_datadir}/applications/Orion.desktop
+%{_datadir}/icons/orion.svg
 
 
 %changelog
+* Sun Sep 17 2017 Robert-André Mauchin <zebob.m@gmail.com> 1.6.1-1
+- Release 1.6.1
 * Thu Jul 20 2017 Robert-André Mauchin <zebob.m@gmail.com> 1.5.1-2
 - Update to Fedora Packaging Guidelines specification
 * Sun Jul 09 2017  Robert-André Mauchin <zebob.m@gmail.com> 1.5.1-1

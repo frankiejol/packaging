@@ -44,9 +44,10 @@
 
 Name:           golang-bazil-fuse
 Version:        0
-Release:        0.1.%{commitdate}.git%{shortcommit}%{?dist}
+Release:        0.1.%{commitdate}git%{shortcommit}%{?dist}
 Summary:        Go library for writing FUSE userspace filesystems
-License:        BSD
+# BSD except fuse.go under MIT licensing
+License:        BSD and MIT
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
@@ -178,7 +179,7 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %files devel -f devel.file-list
 %license LICENSE
 %doc README.md
-%dir %{gopath}/src/bazil.org/fuse
+%dir %{gopath}/src/bazil.org/
 %endif
 
 %if 0%{?with_unit_test} && 0%{?with_devel}
@@ -188,7 +189,7 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20160811.git371fbbd
+* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20160811git371fbbd
 - First package for Fedora
 
 

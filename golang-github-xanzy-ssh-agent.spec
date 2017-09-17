@@ -43,7 +43,7 @@
 
 Name:           golang-%{provider}-%{project}-%{repo}
 Version:        0
-Release:        0.1.%{commitdate}.git%{shortcommit}%{?dist}
+Release:        0.1.%{commitdate}git%{shortcommit}%{?dist}
 Summary:        Create a ssh-agent on any type of OS from any Go application
 # Detected licences
 # - *No copyright* Apache (v2.0) at 'LICENSE'
@@ -154,6 +154,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
-* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20151215.gitba9c9e3
+* Mon Jul 24 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.1.20151215gitba9c9e3
 - First package for Fedora
 

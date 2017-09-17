@@ -1,7 +1,7 @@
 Summary:    Wallpaper changer that automatically downloads wallpapers
 Name:       variety
 Version:    0.6.4
-Release:    2%{?dist}
+Release:    3%{?dist}
 License:    GPLv3
 Url:        https://launchpad.net/variety
 Source0:    https://launchpad.net/variety/trunk/0.6.4/+download/variety_0.6.4-0-589-201704290523.tar.gz
@@ -39,13 +39,15 @@ Requires:       python-pillow
 Requires:       pycairo
 Requires:       dbus-python
 Requires:       python-appindicator
+Requires:       libappindicator-gtk3
 Requires:       python-beautifulsoup4 
 Requires:       python-configobj
 Requires:       python2-gexiv2
 Requires:       python-pycurl
 Requires:       python2-requests
 Requires:       pyexiv2
-Requires:       imagemagick
+Requires:       ImageMagick
+Requires:       webkitgtk3
 Requires:       hicolor-icon-theme
 
 
@@ -125,6 +127,9 @@ fi
 
 
 %changelog
+* Sat Jun 24 2017 Robert-André Mauchin zebob.m@gmail.com> - 0.6.4-3
+- Add libappindicator-gtk3 dependency
+
 * Sat Jun 24 2017 Robert-André Mauchin zebob.m@gmail.com> - 0.6.4-2
 - Fix dependency issue reported.
 

@@ -1,21 +1,39 @@
-Name:		exa
-Version:	0.7.0
-Release:	1%{?dist}
-Summary:	Replacement for ls written in Rust
-		
-License:	MIT
-URL:		https://github.com/ogham/exa
-Source0:	https://github.com/ogham/exa/archive/v%{version}/%{name}-%{version}.tar.gz
+%bcond_without check
 
-Patch0:		exa-0.7.0_Makefile_fix.patch
+Name:       exa
+Version:    0.7.0
+Release:    2%{?dist}
+Summary:    Replacement for ls written in Rust
+        
+License:    MIT
+URL:        https://github.com/ogham/exa
+Source0:    https://github.com/ogham/exa/archive/v%{version}/%{name}-%{version}.tar.gz
 
-ExclusiveArch:  %{?rust_arches:%{rust_arches}}%{!?rust_arches:%{ix86} x86_64 aarch64 ppc64 ppc64le s390x %{arm}}
+Patch0:        exa-0.7.0_Makefile_fix.patch
 
-BuildRequires:  rust
-BuildRequires:  cargo
+ExclusiveArch:  %{rust_arches}
+
+BuildRequires:  rust-packaging
 BuildRequires:  cmake
-BuildRequires:	pkgconfig(libgit2)
+BuildRequires:  pkgconfig(libgit2)
 BuildRequires:  pkgconfig(zlib)
+BuildRequires:  (crate(ansi_term) >= 0.9.0 with crate(ansi_term) < 0.10.0)
+BuildRequires:  (crate(datetime) >= 0.4.3 with crate(datetime) < 0.5.0)
+BuildRequires:  (crate(env_logger) >= 0.3 with crate(env_logger) < 0.4)
+BuildRequires:  (crate(getopts) >= 0.2.14 with crate(getopts) < 0.3.0)
+BuildRequires:  (crate(glob) >= 0.2 with crate(glob) < 0.3)
+BuildRequires:  (crate(lazy_static) >= 0.2 with crate(lazy_static) < 0.3)
+BuildRequires:  (crate(libc) >= 0.2.9 with crate(libc) < 0.3.0)
+BuildRequires:  (crate(locale) >= 0.2.1 with crate(locale) < 0.3.0) 
+BuildRequires:  (crate(log) >= 0.3 with crate(locale) < 0.4) 
+BuildRequires:  (crate(natord) >= 1.0.7 with crate(natord) < 1.1.0) 
+BuildRequires:  (crate(num_cpus) >= 1.3.0 with crate(num_cpus) < 1.4.0) 
+BuildRequires:  (crate(number_prefix) >= 0.2.3 with crate(number_prefix) < 0.3.0) 
+BuildRequires:  (crate(scoped_threadpool) >= 0.1.0 with crate(scoped_threadpool) < 0.2.0) 
+BuildRequires:  (crate(term_grid) >= 0.1.6 with crate(term_grid) < 0.2.0) 
+BuildRequires:  (crate(term_size) >= 0.3.0 with crate(term_size) < 0.4.0) 
+BuildRequires:  (crate(unicode-width) >= 0.1.4 with crate(unicode-width) < 0.2.0) 
+BuildRequires:  (crate(users) >= 0.5.2 with crate(users) < 0.6.0) 
 
 
 %description
@@ -24,17 +42,26 @@ Replacement for ls written in Rust.
 
 %prep
 %autosetup -p1
+%cargo_prep
 
 
 %build
-RUSTFLAGS+=-g cargo build --release %{?_smp_mflags}
+RUSTFLAGS+=-g %cargo_build
 
 
 %install
-%make_install PREFIX=/usr
+%cargo_install
+#%%make_install PREFIX=/usr
+make install-man
 make install-bash-completions PREFIX=/ DESTDIR=%{buildroot}
 make install-zsh-completions PREFIX=/usr DESTDIR=%{buildroot}
 make install-fish-completions PREFIX=/usr DESTDIR=%{buildroot}
+
+
+%if %{with check}
+%check
+%cargo_test
+%endif
 
 
 %files
@@ -48,5 +75,7 @@ make install-fish-completions PREFIX=/usr DESTDIR=%{buildroot}
 
 
 %changelog
+* Sat Sep 02 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.7.0-2
+- Update to Rust Packaging Guidelines
 * Sat Aug 05 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.7.0-1
 - Initial RPM package

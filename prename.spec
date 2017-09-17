@@ -2,7 +2,7 @@ Name:           prename
 Version:        1.9
 Release:        4%{?dist}
 Summary:        Perl script to rename multiple files
-License:        GPLv1+ or Artistic
+License:        GPL+ or Artistic
 URL:            http://search.cpan.org/dist/rename/
 Source0:        http://search.cpan.org/CPAN/authors/id/P/PE/PEDERST/rename-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/pstray/rename/master/LICENSE
@@ -11,10 +11,9 @@ Source1:        https://raw.githubusercontent.com/pstray/rename/master/LICENSE
 Patch0:         %{name}-1.9-namechange.patch
 BuildArch:      noarch
 
+BuildRequires:  perl-generators
+BuildRequires:  perl-interpreter
 BuildRequires:  perl(ExtUtils::MakeMaker)
-BuildRequires:  perl
-Requires:       perl(Getopt::Long)
-Requires:       perl
 
 
 %description
@@ -28,7 +27,7 @@ to modify the $_ string for at least some of the file names specified.
 cp %{SOURCE1} .
 
 %build
-perl Makefile.PL PREFIX=/usr NO_PACKLIST=1
+%__perl Makefile.PL PREFIX=%{_prefix} NO_PACKLIST=1
 %make_build
 
 
@@ -40,7 +39,7 @@ make pure_install DESTDIR=$RPM_BUILD_ROOT
 %files
 %license LICENSE
 %{_bindir}/%{name}
-%{_mandir}/man1/%{name}.1.gz
+%{_mandir}/man1/%{name}.1*
 
 
 %changelog
