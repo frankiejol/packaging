@@ -1,12 +1,15 @@
 Name:           orion
 Version:        1.6.1
 Release:        1%{?dist}
-Summary:        QML/C++-written desktop client for Twitch.tv
+Summary:        Seek and watch streams on Twitch
 
-License:        GPLv3
+License:        GPLv3+
 URL:            https://github.com/alamminsalo/orion
 Source0:        https://github.com/alamminsalo/orion/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:        %{name}.appdata.xml
+
+Patch0:         orion-1.6.1-fix_prefix.patch
+Patch1:         orion-1.6.1-fix_desktop.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  pkgconfig(Qt5)
@@ -16,14 +19,19 @@ BuildRequires:  pkgconfig(Qt5WebEngine)
 BuildRequires:  pkgconfig(Qt5Multimedia)
 BuildRequires:  libappstream-glib
 BuildRequires:  desktop-file-utils
-Requires:       hicolor-icon-theme
 
 #Depends on qt5-qt5webengine
 ExclusiveArch: %{qt5_qtwebengine_arches}
 
 
 %description
-A desktop client for Twitch.tv
+A desktop client for Twitch.tv. Features:
+
+ - Login by twitch credentials
+ - Desktop notifications
+ - Integrated player
+ - Chat support
+ - Support for live streams and vods
 
 
 %prep
@@ -33,41 +41,35 @@ A desktop client for Twitch.tv
 %build
 mkdir build
 cd build
-%{qmake_qt5} ../ "CMAKE_CXX_FLAGS+=-g" "CONFIG+=multimedia"
+%{qmake_qt5} ../ "CONFIG+=multimedia"
+             
 %make_build
 
 
 %install
-install -p -D -m 755 build/orion $RPM_BUILD_ROOT%{_bindir}/orion
-install -p -D -m 644 distfiles/orion.svg $RPM_BUILD_ROOT%{_datadir}/icons/orion.svg
-install -p -D -m 644 %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/appdata/%{name}.appdata.xml
+cd build
+%make_install INSTALL_ROOT=%{buildroot}
+install -p -D -m 644 %{SOURCE1} %{buildroot}%{_datadir}/appdata/%{name}.appdata.xml
 
-desktop-file-install                                    \
---remove-category="Games"                               \
---add-category="Game"                                   \
---delete-original                                       \
---set-icon=orion                                        \
---dir=$RPM_BUILD_ROOT%{_datadir}/applications/          \
-distfiles/Orion.desktop
 
-appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/appdata/%{name}.appdata.xml
+%check
+desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
+appstream-util validate-relax --nonet %{buildroot}%{_datadir}/appdata/%{name}.appdata.xml
+
 
 %post
-touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-  %{_bindir}/gtk-update-icon-cache -q %{_datadir}/icons/hicolor;
-fi
+/bin/touch --no-create %{_datadir}/icons &>/dev/null || :
 
 
 %postun
-touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-  %{_bindir}/gtk-update-icon-cache -q %{_datadir}/icons/hicolor;
+if [ $1 -eq 0 ] ; then
+    /bin/touch --no-create %{_datadir}/icons &>/dev/null
+    /usr/bin/gtk-update-icon-cache %{_datadir}/icons &>/dev/null || :
 fi
 
 
 %posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons &>/dev/null || :
 
 
 %files
@@ -75,8 +77,8 @@ fi
 %doc README.md
 %{_bindir}/orion
 %{_datadir}/appdata/%{name}.appdata.xml
-%{_datadir}/applications/Orion.desktop
-%{_datadir}/icons/orion.svg
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/icons/%{name}.svg
 
 
 %changelog
