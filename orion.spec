@@ -19,6 +19,7 @@ BuildRequires:  pkgconfig(Qt5WebEngine)
 BuildRequires:  pkgconfig(Qt5Multimedia)
 BuildRequires:  libappstream-glib
 BuildRequires:  desktop-file-utils
+Requires:       hicolor-icon-theme
 
 #Depends on qt5-qt5webengine
 ExclusiveArch: %{qt5_qtwebengine_arches}
@@ -58,18 +59,18 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/appdata/%{name}.ap
 
 
 %post
-/bin/touch --no-create %{_datadir}/icons &>/dev/null || :
+touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %postun
 if [ $1 -eq 0 ] ; then
-    /bin/touch --no-create %{_datadir}/icons &>/dev/null
-    /usr/bin/gtk-update-icon-cache %{_datadir}/icons &>/dev/null || :
+    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
 
 
 %posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons &>/dev/null || :
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %files
@@ -78,7 +79,7 @@ fi
 %{_bindir}/orion
 %{_datadir}/appdata/%{name}.appdata.xml
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/%{name}.svg
+%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
 
 %changelog
