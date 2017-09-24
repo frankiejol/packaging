@@ -1,6 +1,6 @@
-%global commit0 71720207e1342b06090095c2cbf2aacf4d7ee3fa 
+%global commit0 049fa0794c854d0b5bd407e4654db7ed9ebf4495 
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global commitdate  20170915
+%global commitdate  20170923
 
 # Use ALSA backend?
 %define alsa_backend      0
@@ -96,8 +96,8 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox-nightly
-Version:        57.0a1
-Release:        0.7.%{commitdate}git%{shortcommit0}%{?pre_tag}%{?dist}
+Version:        58.0a1
+Release:        0.1.%{commitdate}git%{shortcommit0}%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -786,7 +786,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/browser/chrome.manifest
 %{mozappdir}/browser/defaults/preferences/firefox-redhat-default-prefs.js
 %{mozappdir}/browser/features/activity-stream@mozilla.org.xpi
-%{mozappdir}/browser/features/clicktoplay-rollout@mozilla.org.xpi
 %{mozappdir}/browser/features/e10srollout@mozilla.org.xpi
 %{mozappdir}/browser/features/firefox@getpocket.com.xpi
 %{mozappdir}/browser/features/flyweb@mozilla.org.xpi
@@ -847,8 +846,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Sat Sep 02 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.7.20170915git7172020
+* Sat Sep 23 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.1.20170915git049fa07
+- Update to 58.0a1-20170915git049fa07
+
+* Fri Sep 15 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.8.20170915git7172020
 - Update to 57.0a1-20170915git7172020
+
+* Sun Sep 10 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.7.20170915gitd71460b
+- Update to 57.0a1-20170915gitd71460b
 
 * Sat Sep 02 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.6.20170910gitd71460b
 - Update to 57.0a1-20170910gitd71460b
