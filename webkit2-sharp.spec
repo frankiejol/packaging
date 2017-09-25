@@ -4,7 +4,7 @@
 
 Name:		webkit2-sharp
 Version:	0
-Release:	0.2%{?commitdate:.%{commitdate}git%{shortcommit}}%{?dist}
+Release:	0.3%{?commitdate:.%{commitdate}git%{shortcommit}}%{?dist}
 Summary:	C# bindings for WebKit 2 with GTK+ 3
 
 License:	MIT
@@ -67,6 +67,7 @@ sed -i 's/\r$//' COPYING
 %make_install
 
 find %{buildroot} -name '*.la' -delete
+chmod 0755 %{buildroot}%{_libdir}/libwebkit2sharpglue-2.10.9.so
 
 %post -p /sbin/ldconfig
 
@@ -84,6 +85,9 @@ find %{buildroot} -name '*.la' -delete
 %{_prefix}/lib/monodoc/sources/webkit2-sharp*
 
 %changelog
+* Mon Sep 25 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.3.20170219gita59fd76
+- Fixed permissions on the lib for debugging symbols
+
 * Sun Sep 24 2017 Luya Tshimbalanga <luya@fedoraproject.org> - 0-0.2.20170219gita59fd76
 - Improve spec file
 
