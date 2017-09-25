@@ -58,7 +58,9 @@ Development files for WebKit2-sharp
 
 %build
 ./autogen.sh
-%configure
+%configure --disable-static
+sed -i -e 's! -shared ! -Wl,--as-needed\0!g' libtool
+sed -i 's/\r$//' COPYING
 %make_build
 
 %install
@@ -71,14 +73,14 @@ find %{buildroot} -name '*.la' -delete
 %postun -p /sbin/ldconfig
 
 %files
-%doc COPYING README.md
+%license COPYING
+%doc README.md
 %{_prefix}/lib/mono/
 %{_datadir}/gapi-3.0/webkit2-sharp-api.xml
 %{_libdir}/libwebkit2sharpglue-2.10.9.so
 
 %files devel
 %{_libdir}/pkgconfig/webkit2-sharp-4.0.pc
-%{_libdir}/libwebkit2sharpglue-2.10.9.a
 %{_prefix}/lib/monodoc/sources/webkit2-sharp*
 
 %changelog
