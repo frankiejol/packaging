@@ -26,7 +26,7 @@ BuildRequires:  libappstream-glib
 
 
 %description
-ZeGrapher is theree and opensource math graphing software. It can plot
+ZeGrapher is the free and opensource math graphing software. It can plot
 functions, sequences, parametric equations and data on the plane. It has been
 designed to be as easy to use as possible: there's no need for any 
 documentation before use, download it and see!
