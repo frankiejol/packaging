@@ -6,8 +6,8 @@ Version:        3.0.1
 Release:        2%{?dist}
 License:        GPLv3+
 
-URL:            https://github.com/AdelKS/%{altname}
-Source0:        %{url}/archive/v%{version}/%{altname}-%{version}.tar.gz
+URL:            https://www.zegrapher.com/
+Source0:        https://github.com/AdelKS/%{altname}/archive/v%{version}/%{altname}-%{version}.tar.gz
 
 #https://github.com/AdelKS/ZeGrapher/pull/5
 Patch0:         0001-add_appstream_file.patch
@@ -75,13 +75,13 @@ update-desktop-database &> /dev/null ||:
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files
-%doc README.md TODO.txt
+%doc README.md
 %license LICENSE
-
 %{_bindir}/%{altname}
 %{_datadir}/appdata/%{altname}.appdata.xml
 %{_datadir}/applications/%{altname}.desktop
 %{_datadir}/icons/hicolor/128x128/apps/%{altname}.png
+%dir %{_datadir}/%{altname}
 %{_datadir}/%{altname}/locale
 
 
