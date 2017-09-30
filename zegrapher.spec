@@ -56,6 +56,8 @@ pushd build
 %make_install INSTALL_ROOT=%{buildroot}
 popd
 
+%find_lang %{altname} --with-qt
+
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{altname}.desktop
 appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{altname}.appdata.xml
@@ -74,7 +76,7 @@ update-desktop-database &> /dev/null ||:
 %posttrans
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
-%files
+%files -f %{altname}.lang
 %doc README.md
 %license LICENSE
 %{_bindir}/%{altname}
@@ -82,7 +84,6 @@ update-desktop-database &> /dev/null ||:
 %{_datadir}/applications/%{altname}.desktop
 %{_datadir}/icons/hicolor/128x128/apps/%{altname}.png
 %dir %{_datadir}/%{altname}
-%{_datadir}/%{altname}/locale
 
 
 %changelog
