@@ -59,52 +59,6 @@ BuildRequires: golang(google.golang.org/api/drive/v2) >= 0-0.19.git77f162b
 BuildRequires: golang(google.golang.org/api/googleapi) >= 0-0.19.git77f162b
 BuildRequires: golang(google.golang.org/api/storage/v1) >= 0-0.19.git77f162b
 
-Requires:      golang(bazil.org/fuse)
-Requires:      golang(bazil.org/fuse/fs)
-Requires:      golang(github.com/Unknwon/goconfig)
-Requires:      golang(github.com/VividCortex/ewma)
-Requires:      golang(github.com/aws/aws-sdk-go/aws)
-Requires:      golang(github.com/aws/aws-sdk-go/aws/awserr)
-Requires:      golang(github.com/aws/aws-sdk-go/aws/corehandlers)
-Requires:      golang(github.com/aws/aws-sdk-go/aws/credentials)
-Requires:      golang(github.com/aws/aws-sdk-go/aws/credentials/ec2rolecreds)
-Requires:      golang(github.com/aws/aws-sdk-go/aws/ec2metadata)
-Requires:      golang(github.com/aws/aws-sdk-go/aws/request)
-Requires:      golang(github.com/aws/aws-sdk-go/aws/session)
-Requires:      golang(github.com/aws/aws-sdk-go/service/s3)
-Requires:      golang(github.com/aws/aws-sdk-go/service/s3/s3manager)
-Requires:      golang(github.com/billziss-gh/cgofuse/fuse)
-Requires:      golang(github.com/jlaffaye/ftp)
-Requires:      golang(github.com/ncw/dropbox-sdk-go-unofficial/dropbox)
-Requires:      golang(github.com/ncw/dropbox-sdk-go-unofficial/dropbox/files)
-Requires:      golang(github.com/ncw/go-acd)
-Requires:      golang(github.com/ncw/swift) >= 0-0.8.gitaf59a5a
-Requires:      golang(github.com/nsf/termbox-go)
-Requires:      golang(github.com/pkg/errors)
-Requires:      golang(github.com/pkg/sftp)
-Requires:      golang(github.com/rfjakob/eme)
-Requires:      golang(github.com/skratchdot/open-golang/open)
-Requires:      golang(github.com/spf13/cobra)
-Requires:      golang(github.com/spf13/cobra/doc)
-Requires:      golang(github.com/spf13/pflag)
-Requires:      golang(github.com/stretchr/testify/assert)
-Requires:      golang(github.com/stretchr/testify/require)
-Requires:      golang(github.com/xanzy/ssh-agent)
-Requires:      golang(golang.org/x/crypto/nacl/secretbox) >= 0-0.16.gite4e2799
-Requires:      golang(golang.org/x/crypto/scrypt) >= 0-0.16.gite4e2799
-Requires:      golang(golang.org/x/crypto/ssh) >= 0-0.16.gite4e2799
-Requires:      golang(golang.org/x/crypto/ssh/terminal) >= 0-0.16.gite4e2799
-Requires:      golang(golang.org/x/net/context)
-Requires:      golang(golang.org/x/net/html)
-Requires:      golang(golang.org/x/oauth2)
-Requires:      golang(golang.org/x/oauth2/google)
-Requires:      golang(golang.org/x/sys/unix)
-Requires:      golang(golang.org/x/text/unicode/norm)
-Requires:      golang(golang.org/x/time/rate)
-Requires:      golang(google.golang.org/api/drive/v2) >= 0-0.19.git77f162b
-Requires:      golang(google.golang.org/api/googleapi) >= 0-0.19.git77f162b
-Requires:      golang(google.golang.org/api/storage/v1) >= 0-0.19.git77f162b
-
 
 %description
 Rclone is a command line program to sync files and directories to and 
