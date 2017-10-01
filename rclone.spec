@@ -1,12 +1,12 @@
 %global _dwz_low_mem_die_limit 0
 
 Name:           rclone
-Version:        1.37
-Release:        2%{?dist}
+Version:        1.38
+Release:        1%{?dist}
 Summary:        rsync for cloud storage
 License:        MIT 
 URL:            http://rclone.org/
-Source0:        https://github.com/ncw/rclone/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        https://github.com/ncw/rclone/archive/v%{version}/%{name}-%{version}.tar.gz
 
 # e.g. el6 has ppc64 arch without gcc-go, so EA tag is required
 ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %{arm}}
@@ -78,7 +78,7 @@ Requires:      golang(github.com/jlaffaye/ftp)
 Requires:      golang(github.com/ncw/dropbox-sdk-go-unofficial/dropbox)
 Requires:      golang(github.com/ncw/dropbox-sdk-go-unofficial/dropbox/files)
 Requires:      golang(github.com/ncw/go-acd)
-Requires:      golang(github.com/ncw/swift)
+Requires:      golang(github.com/ncw/swift) >= 0-0.8.gitaf59a5a
 Requires:      golang(github.com/nsf/termbox-go)
 Requires:      golang(github.com/pkg/errors)
 Requires:      golang(github.com/pkg/sftp)
@@ -90,10 +90,10 @@ Requires:      golang(github.com/spf13/pflag)
 Requires:      golang(github.com/stretchr/testify/assert)
 Requires:      golang(github.com/stretchr/testify/require)
 Requires:      golang(github.com/xanzy/ssh-agent)
-Requires:      golang(golang.org/x/crypto/nacl/secretbox)
-Requires:      golang(golang.org/x/crypto/scrypt)
-Requires:      golang(golang.org/x/crypto/ssh)
-Requires:      golang(golang.org/x/crypto/ssh/terminal)
+Requires:      golang(golang.org/x/crypto/nacl/secretbox) >= 0-0.16.gite4e2799
+Requires:      golang(golang.org/x/crypto/scrypt) >= 0-0.16.gite4e2799
+Requires:      golang(golang.org/x/crypto/ssh) >= 0-0.16.gite4e2799
+Requires:      golang(golang.org/x/crypto/ssh/terminal) >= 0-0.16.gite4e2799
 Requires:      golang(golang.org/x/net/context)
 Requires:      golang(golang.org/x/net/html)
 Requires:      golang(golang.org/x/oauth2)
@@ -101,9 +101,9 @@ Requires:      golang(golang.org/x/oauth2/google)
 Requires:      golang(golang.org/x/sys/unix)
 Requires:      golang(golang.org/x/text/unicode/norm)
 Requires:      golang(golang.org/x/time/rate)
-Requires:      golang(google.golang.org/api/drive/v2)
-Requires:      golang(google.golang.org/api/googleapi)
-Requires:      golang(google.golang.org/api/storage/v1)
+Requires:      golang(google.golang.org/api/drive/v2) >= 0-0.19.git77f162b
+Requires:      golang(google.golang.org/api/googleapi) >= 0-0.19.git77f162b
+Requires:      golang(google.golang.org/api/storage/v1) >= 0-0.19.git77f162b
 
 
 %description
@@ -141,6 +141,8 @@ install -p -D -m 0644 ./rclone.1 %{buildroot}%{_mandir}/man1/rclone.1
 
 
 %changelog
+* Sun Oct 01 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.38-1
+- Update to version 1.38
 * Fri Jul 28 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.37-2
 - Unbundled revision
 * Sun Jul 23 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.37-1
