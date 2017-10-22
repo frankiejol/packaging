@@ -67,7 +67,6 @@ sed -i 's/\r$//' COPYING
 %make_install
 
 find %{buildroot} -name '*.la' -delete
-chmod 0755 %{buildroot}%{_libdir}/libwebkit2sharpglue-2.10.9.so
 
 %post -p /sbin/ldconfig
 
@@ -86,7 +85,7 @@ chmod 0755 %{buildroot}%{_libdir}/libwebkit2sharpglue-2.10.9.so
 
 %changelog
 * Mon Sep 25 2017 Robert-André Mauchin <zebob.m@gmail.com> - 0-0.3.20170219gita59fd76
-- Fixed permissions on the lib for debugging symbols
+- Disable static libraries
 
 * Sun Sep 24 2017 Luya Tshimbalanga <luya@fedoraproject.org> - 0-0.2.20170219gita59fd76
 - Improve spec file

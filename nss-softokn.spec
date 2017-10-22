@@ -1,6 +1,6 @@
 %global nspr_version 4.17.0
 %global nss_name nss
-%global nss_util_version 3.33.0
+%global nss_util_version 3.34.0
 %global unsupported_tools_directory %{_libdir}/nss/unsupported-tools
 %global saved_files_dir %{_libdir}/nss/saved
 %global prelink_conf_dir %{_sysconfdir}/prelink.conf.d/
@@ -8,8 +8,8 @@
 %global dracut_modules_dir %{dracutlibdir}/modules.d/05nss-softokn/
 %global dracut_conf_dir %{dracutlibdir}/dracut.conf.d
 
-%global commit 52e38f913220
-%global commitdate 20170816
+%global commit 6fb9c5396d52
+%global commitdate 20171004
 
 # Produce .chk files for the final stripped binaries
 #
@@ -32,7 +32,7 @@
 
 Summary:          Network Security Services Softoken Module
 Name:             nss-softokn
-Version:          3.33.0
+Version:          3.34.0
 # for Rawhide, please always use release >= 2
 # for Fedora release branches, please use release < 2 (1.0, 1.1, ...)
 Release:          2.%{commitdate}hg%{commit}%{?dist}
@@ -439,6 +439,9 @@ done
 %{_includedir}/nss3/shsign.h
 
 %changelog
+* Sat Oct  7 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.34.0-2.20171004hg6fb9c5396d52
+- Update to NSS 3.34.0
+
 * Sun Sep  3 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.33.0-2.20170816hg52e38f913220
 - Update to NSS 3.33.0
 

@@ -1,10 +1,10 @@
 %global nspr_version 4.17.0
-%global commit 52e38f913220
-%global commitdate 20170816
+%global commit 6fb9c5396d52
+%global commitdate 20171004
 
 Summary:          Network Security Services Utilities Library
 Name:             nss-util
-Version:          3.33.0
+Version:          3.34.0
 # for Rawhide, please always use release >= 2
 # for Fedora release branches, please use release < 2 (1.0, 1.1, ...)
 Release:          2.%{commitdate}hg%{commit}%{?dist}
@@ -20,7 +20,7 @@ BuildRequires:    gawk
 BuildRequires:    psmisc
 BuildRequires:    perl-interpreter
 
-Source0:          nss-util-3.33.0.tar.gz
+Source0:          %{name}-%{version}.tar.gz
 # The nss-util tar ball is a subset of nss-{version}.tar.gz.
 # We use the nss-split-util.sh script for keeping only what we need
 # nss-util is produced via via nss-split-util.sh {version}
@@ -286,6 +286,9 @@ done
 %{_includedir}/nss3/templates/templates.c
 
 %changelog
+* Sat Oct  7 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.34.0-2.20171004hg6fb9c5396d52
+- Update to NSS 3.34.0
+
 * Sun Sep  3 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.33.0-2.20170816hg52e38f913220
 - Update to NSS 3.33.0
 

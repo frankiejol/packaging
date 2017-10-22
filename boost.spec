@@ -33,9 +33,9 @@
 
 Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
-Version: 1.64.0
-%global version_enc 1_64_0
-Release: 0.8%{?dist}
+Version: 1.65.1
+%global version_enc 1_65_1
+Release: 1%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -77,6 +77,7 @@ Requires: boost-random%{?_isa} = %{version}-%{release}
 Requires: boost-regex%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
 Requires: boost-signals%{?_isa} = %{version}-%{release}
+Requires: boost-stacktrace%{?_isa} = %{version}-%{release}
 Requires: boost-system%{?_isa} = %{version}-%{release}
 Requires: boost-test%{?_isa} = %{version}-%{release}
 Requires: boost-thread%{?_isa} = %{version}-%{release}
@@ -94,7 +95,7 @@ BuildRequires: python2-numpy
 BuildRequires: python3-devel
 BuildRequires: python3-numpy
 %endif
-BuildRequires: libicu-devel >= 59.1
+BuildRequires: libicu-devel
 %if %{with quadmath}
 BuildRequires: libquadmath-devel
 %endif
@@ -130,15 +131,9 @@ Patch68: boost-1.58.0-address-model.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
 Patch82: boost-1.60.0-no-rpath.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1451982
-Patch83: boost-1.63.0-dual-python-build-v2.patch
-
-# https://github.com/boostorg/mpi/pull/39
-Patch84: boost-1.64.0-mpi-get_data.patch
-
-# https://svn.boost.org/trac10/ticket/12516
-# https://github.com/boostorg/serialization/commit/1d86261581230e2dc5d617a9b16287d326f3e229
-Patch85: boost-1.64.0-serialization-make_array.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=1485641
+# https://github.com/boostorg/icl/pull/9
+Patch86: boost-1.64.0-icl-ttp-matching.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -180,7 +175,7 @@ Group: System Environment/Libraries
 %description container
 
 Boost.Container library implements several well-known containers,
-including STL containers. The aim of the library is to offers advanced
+including STL containers. The aim of the library is to offer advanced
 features not present in standard containers or to offer the latest
 standard draft features for compilers that comply with C++03.
 
@@ -244,7 +239,7 @@ Requires: boost-regex%{?_isa} = %{version}-%{release}
 %description graph
 
 Run-time support for the BGL graph library.  BGL interface and graph
-components are generic, in the same sense as the the Standard Template
+components are generic, in the same sense as the Standard Template
 Library (STL).
 
 %package iostreams
@@ -253,7 +248,7 @@ Group: System Environment/Libraries
 
 %description iostreams
 
-Run-time support for Boost.IOStreams, a framework for defining streams,
+Run-time support for Boost.Iostreams, a framework for defining streams,
 stream buffers and i/o filters.
 
 %package locale
@@ -281,9 +276,6 @@ tools along with public interfaces for extending the library.
 %package math
 Summary: Math functions for boost TR1 library
 Group: System Environment/Libraries
-%if %{with quadmath}
-Requires: libquadmath%{?_isa}
-%endif
 
 %description math
 
@@ -302,7 +294,7 @@ The Boost Python Library is a framework for interfacing Python and
 C++. It allows you to quickly and seamlessly expose C++ classes,
 functions and objects to Python, and vice versa, using no special
 tools -- just your C++ compiler.  This package contains run-time
-support for the NumPy extension of the Boost Python Library.
+support for the NumPy extension of the Boost Python Library for Python 2.
 
 %if %{with python3}
 
@@ -332,21 +324,21 @@ Run-time support of boost program options library, which allows program
 developers to obtain (name, value) pairs from the user, via
 conventional methods such as command-line and configuration file.
 
-%package -n python2-boost
-%{?python_provide:%python_provide python2-boost}
+%package python2
 # Remove before F30
 Provides: %{name}-python%{?_isa} = %{version}-%{release}
 Obsoletes: %{name}-python < %{version}-%{release}
+Obsoletes: python2-%{name} < %{version}-%{release}
 Summary: Run-time component of boost python library
 Group: System Environment/Libraries
 
-%description -n python2-boost
+%description python2
 
 The Boost Python Library is a framework for interfacing Python and
 C++. It allows you to quickly and seamlessly expose C++ classes,
 functions and objects to Python, and vice versa, using no special
 tools -- just your C++ compiler.  This package contains run-time
-support for Boost Python Library.
+support for the Boost Python Library compiled for Python 2.
 
 %if %{with python3}
 
@@ -360,7 +352,7 @@ The Boost Python Library is a framework for interfacing Python and
 C++. It allows you to quickly and seamlessly expose C++ classes,
 functions and objects to Python, and vice versa, using no special
 tools -- just your C++ compiler.  This package contains run-time
-support for Boost Python Library compiled for Python 3.
+support for the Boost Python Library compiled for Python 3.
 
 %package python3-devel
 Summary: Shared object symbolic links for Boost.Python 3
@@ -406,6 +398,15 @@ Group: System Environment/Libraries
 %description signals
 
 Run-time support for managed signals & slots callback implementation.
+
+%package stacktrace
+Summary: Run-time component of boost stacktrace library
+Group: System Environment/Libraries
+
+%description stacktrace
+
+Simple library that provides information about call sequence in a human-readable
+form. 
 
 %package system
 Summary: Run-time component of boost system support library
@@ -461,7 +462,7 @@ The Boost.TypeErasure library provides runtime polymorphism in C++
 that is more flexible than that provided by the core language.
 
 %package wave
-Summary: Run-time component of boost C99/C++ pre-processing library
+Summary: Run-time component of boost C99/C++ preprocessing library
 Group: System Environment/Libraries
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 Requires: boost-date-time%{?_isa} = %{version}-%{release}
@@ -473,7 +474,7 @@ Requires: boost-thread%{?_isa} = %{version}-%{release}
 
 Run-time support for the Boost.Wave library, a Standards conforming,
 and highly configurable implementation of the mandated C99/C++
-pre-processor functionality.
+preprocessor functionality.
 
 %package devel
 Summary: The Boost C++ headers and shared development libraries
@@ -521,7 +522,7 @@ Obsoletes: odeint-doc < 2.2-5
 %description doc
 This package contains the documentation in the HTML format of the Boost C++
 libraries. The documentation provides the same content as that on the Boost
-web page (http://www.boost.org/doc/libs/1_40_0).
+web page (http://www.boost.org/doc/libs/%{version_enc}).
 
 %package examples
 Summary: Source examples for the Boost C++ libraries
@@ -571,7 +572,7 @@ Requires: python2-openmpi%{?_isa}
 
 %description openmpi-python
 
-Python support for Boost.MPI-OpenMPI, a library providing a clean C++
+Python 2 support for Boost.MPI-OpenMPI, a library providing a clean C++
 API over the OpenMPI implementation of MPI.
 
 %if %{with python3}
@@ -613,7 +614,7 @@ Requires: boost-serialization%{?_isa} = %{version}-%{release}
 %description graph-openmpi
 
 Run-time support for the Parallel BGL graph library.  The interface and
-graph components are generic, in the same sense as the the Standard
+graph components are generic, in the same sense as the Standard
 Template Library (STL).  This libraries in this package use OpenMPI
 back-end to do the parallel work.
 
@@ -662,7 +663,7 @@ Requires: python2-mpich%{?_isa}
 
 %description mpich-python
 
-Python support for Boost.MPI-MPICH, a library providing a clean C++
+Python 2 support for Boost.MPI-MPICH, a library providing a clean C++
 API over the MPICH implementation of MPI.
 
 %if %{with python3}
@@ -706,7 +707,7 @@ Obsoletes: boost-graph-mpich2 < 1.53.0-9
 %description graph-mpich
 
 Run-time support for the Parallel BGL graph library.  The interface and
-graph components are generic, in the same sense as the the Standard
+graph components are generic, in the same sense as the Standard
 Template Library (STL).  This libraries in this package use MPICH
 back-end to do the parallel work.
 
@@ -743,10 +744,11 @@ Group: Development/Tools
 %description jam
 Boost.Jam (BJam) is the low-level build engine tool for Boost.Build.
 Historically, Boost.Jam is based on on FTJam and on Perforce Jam but has grown
-a number of significant features and is now developed independently
+a number of significant features and is now developed independently.
 
 %prep
 %setup -q -n %{toplev_dirname}
+find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 
 %patch4 -p1
 %patch5 -p1
@@ -758,9 +760,7 @@ a number of significant features and is now developed independently
 %patch65 -p1
 %patch68 -p1
 %patch82 -p0
-%patch83 -p1
-%patch84 -p2
-%patch85 -p2
+%patch86 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1189,9 +1189,9 @@ rm -f tmp-doc-directories
 
 %postun program-options -p /sbin/ldconfig
 
-%post -n python2-boost -p /sbin/ldconfig
+%post python2 -p /sbin/ldconfig
 
-%postun -n python2-boost -p /sbin/ldconfig
+%postun python2 -p /sbin/ldconfig
 
 %if %{with python3}
 %post python3 -p /sbin/ldconfig
@@ -1214,6 +1214,10 @@ rm -f tmp-doc-directories
 %post signals -p /sbin/ldconfig
 
 %postun signals -p /sbin/ldconfig
+
+%post stacktrace -p /sbin/ldconfig
+
+%postun stacktrace -p /sbin/ldconfig
 
 %post system -p /sbin/ldconfig
 
@@ -1351,7 +1355,7 @@ fi
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_program_options.so.%{sonamever}
 
-%files -n python2-boost
+%files python2
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_python.so.%{sonamever}
 
@@ -1382,6 +1386,12 @@ fi
 %files signals
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_signals.so.%{sonamever}
+
+%files stacktrace
+%license LICENSE_1_0.txt
+%{_libdir}/libboost_stacktrace_addr2line.so.%{sonamever}
+%{_libdir}/libboost_stacktrace_basic.so.%{sonamever}
+%{_libdir}/libboost_stacktrace_noop.so.%{sonamever}
 
 %files system
 %license LICENSE_1_0.txt
@@ -1445,6 +1455,9 @@ fi
 %{_libdir}/libboost_serialization.so
 %{_libdir}/libboost_wserialization.so
 %{_libdir}/libboost_signals.so
+%{_libdir}/libboost_stacktrace_addr2line.so
+%{_libdir}/libboost_stacktrace_basic.so
+%{_libdir}/libboost_stacktrace_noop.so
 %{_libdir}/libboost_system.so
 %{_libdir}/libboost_thread.so
 %{_libdir}/libboost_timer.so
@@ -1550,9 +1563,27 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
-* Sun Aug 20 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.64.0-0.8
-- Build against latest libicu
-  
+* Mon Oct 16 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.65.1-1
+- Rebase to 1.65.1
+
+* Mon Sep 25 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-4
+- Fix some rpmlint issues
+- Remove Requires for libquadmath (explicit-lib-dependency)
+- Remove executable bits on header files (spurious-executable-perm)
+- Adjust boost.wave %%description (spelling-error)
+
+* Wed Sep 13 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-3
+- Rename python2-boost to boost-python2
+
+* Tue Sep 12 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-2
+- Patch to fix #1485641
+
+* Wed Sep 06 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-1
+- Fix descriptions
+
+* Sun Aug 20 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.64.0-0.8
+- Add Provides for the old name without %%_isa
+
 * Sat Aug 19 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.64.0-0.7
 - Python 2 binary package renamed to python2-boost
   See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3

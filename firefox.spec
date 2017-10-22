@@ -1,6 +1,6 @@
-%global commit0 c5cf9de9bd7cbe7f634d4a4882091cd8ce9efd37 
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global commitdate  20171015
+%if 0%{?fedora} < 26
+ExcludeArch: armv7hl
+%endif
 
 # Use ALSA backend?
 %define alsa_backend      0
@@ -31,7 +31,7 @@
 
 # Use system libicu?
 %if 0%{?fedora} > 27
-%define system_libicu     1
+%define system_libicu     0
 %else
 %define system_libicu     0
 %endif
@@ -68,10 +68,14 @@
 %endif
 
 %if %{?system_nss}
-%global nspr_version 4.17
-%global nspr_build_version %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
-%global nss_version 3.34
-%global nss_build_version %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
+%global nspr_version 4.10.10
+# NSS/NSPR quite often ends in build override, so as requirement the version
+# we're building against could bring us some broken dependencies from time to time.
+#%global nspr_build_version %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
+%global nspr_build_version %{nspr_version}
+%global nss_version 3.32.1
+#%global nss_build_version %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
+%global nss_build_version %{nss_version}
 %endif
 
 %if %{?system_sqlite}
@@ -90,28 +94,30 @@
 %define enable_mozilla_crashreporter       0
 %if !%{debug_build}
 %ifarch %{ix86} x86_64
+%if 0%{?fedora} < 27
 %define enable_mozilla_crashreporter       1
+%endif
 %endif
 %endif
 
 Summary:        Mozilla Firefox Web browser
-Name:           firefox-nightly
-Version:        58.0a1
-Release:        0.6.%{commitdate}git%{shortcommit0}%{?pre_tag}%{?dist}
+Name:           firefox
+Version:        56.0
+Release:        5%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
-Source0:        https://github.com/mozilla/gecko-dev/archive/%{commit0}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        https://archive.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.xz
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-%{commitdate}.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20170927.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
-Source20:       firefox-nightly.desktop
-Source21:       firefox-nightly.sh.in
-Source23:       firefox-nightly.1
+Source20:       firefox.desktop
+Source21:       firefox.sh.in
+Source23:       firefox.1
 Source24:       mozilla-api-key
-Source25:       firefox-nightly-symbolic.svg
+Source25:       firefox-symbolic.svg
 Source26:       distribution.ini
 Source27:       google-api-key
 
@@ -126,10 +132,15 @@ Patch26:        build-icu-big-endian.patch
 Patch27:        mozilla-1335250.patch
 # Also fixes s390x: https://bugzilla.mozilla.org/show_bug.cgi?id=1376268
 Patch29:        build-big-endian.patch
+Patch30:        fedora-build.patch
 Patch31:        build-ppc64-s390x-curl.patch
+Patch32:        build-rust-ppc64le.patch
 Patch34:        build-cubeb-pulse-arm.patch
 Patch35:        build-ppc-jit.patch
 Patch36:        build-missing-xlocale-h.patch
+# Always feel lucky for unsupported platforms:
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1347128
+Patch37:        build-jit-atomic-always-lucky.patch
 # Fixing missing cacheFlush when JS_CODEGEN_NONE is used (s390x)
 Patch38:        build-cacheFlush-missing.patch
 
@@ -141,6 +152,8 @@ Patch224:        mozilla-1170092.patch
 Patch225:        mozilla-1005640-accept-lang.patch
 #ARM run-time patch
 Patch226:        rhbz-1354671.patch
+Patch229:        firefox-nss-version.patch
+Patch230:        rhbz-1497932.patch
 
 # Upstream patches
 Patch402:        mozilla-1196777.patch
@@ -150,9 +163,10 @@ Patch410:        mozilla-1321521.patch
 Patch411:        mozilla-1321521-2.patch
 Patch412:        mozilla-1337988.patch
 Patch413:        mozilla-1353817.patch
-    
-#CSD patch
-Patch600:       rb179444.patch
+Patch415:        mozilla-1405267.patch
+
+# Debian patches
+Patch500:        mozilla-440908.patch
 
 %if %{?system_nss}
 BuildRequires:  pkgconfig(nspr) >= %{nspr_version}
@@ -193,7 +207,7 @@ BuildRequires:  libvpx-devel >= %{libvpx_version}
 %endif
 BuildRequires:  autoconf213
 BuildRequires:  pkgconfig(libpulse)
-BuildRequires:  pkgconfig(icu-i18n) >= 59.1
+BuildRequires:  pkgconfig(icu-i18n)
 BuildRequires:  pkgconfig(gconf-2.0)
 BuildRequires:  yasm
 BuildRequires:  llvm
@@ -207,6 +221,15 @@ Requires:       p11-kit-trust
 Requires:       nspr >= %{nspr_build_version}
 Requires:       nss >= %{nss_build_version}
 %endif
+BuildRequires:  python2-devel
+
+%if 0%{?fedora} > 25
+# For early testing of rhbz#1400293 mozbz#1324096 on F26 and Rawhide,
+# temporarily require the specific NSS build with the backports.
+# Can be removed after firefox is changed to require NSS 3.30.
+BuildRequires:  nss-devel >= 3.29.1-2.1
+Requires:       nss >= 3.29.1-2.1
+%endif
 
 %if 0%{?fedora} < 26
 # Using Conflicts for p11-kit, not Requires, because on multi-arch
@@ -216,6 +239,9 @@ Requires:       nss >= %{nss_build_version}
 Conflicts: p11-kit < 0.23.2-3
 # Requires build with CKA_NSS_MOZILLA_CA_POLICY attribute
 Requires: ca-certificates >= 2017.2.11-1.1
+# Requires NSS build with backports from NSS 3.30
+BuildRequires:  nss-devel >= 3.29.3-1.1
+Requires:       nss >= 3.29.3-1.1
 %endif
 
 BuildRequires:  desktop-file-utils
@@ -246,7 +272,7 @@ compliance, performance and portability.
 %global moz_debug_prefix %{_prefix}/lib/debug
 %global moz_debug_dir %{moz_debug_prefix}%{mozappdir}
 %global uname_m %(uname -m)
-%global symbols_file_name firefox-%{version}.en-US.%{_os}-%{uname_m}.crashreporter-symbols.zip
+%global symbols_file_name %{name}-%{version}.en-US.%{_os}-%{uname_m}.crashreporter-symbols.zip
 %global symbols_file_path %{moz_debug_dir}/%{symbols_file_name}
 %global _find_debuginfo_opts -p %{symbols_file_path} -o debugcrashreporter.list
 %global crashreporter_pkg_name mozilla-crashreporter-%{name}-debuginfo
@@ -276,7 +302,7 @@ This package contains results of tests executed during build.
 #---------------------------------------------------------------------
 
 %prep
-%setup -q -n gecko-dev-%{commit0}
+%setup -q
 
 # Build patches, can't change backup suffix from default because during build
 # there is a compare of config and js/config directories and .orig suffix is
@@ -290,11 +316,14 @@ This package contains results of tests executed during build.
 %patch25 -p1 -b .rhbz-1219542-s390
 %endif
 %patch29 -p1 -b .big-endian
+%patch30 -p1 -b .fedora-build
 %patch31 -p1 -b .ppc64-s390x-curl
+%patch32 -p1 -b .rust-ppc64le
 # don't need that %patch34 -p1 -b .cubeb-pulse-arm
 %ifarch ppc ppc64 ppc64le
 %patch35 -p1 -b .ppc-jit
 %endif
+%patch37 -p1 -b .jit-atomic-lucky
 
 %patch3  -p1 -b .arm
 
@@ -310,6 +339,7 @@ This package contains results of tests executed during build.
 %ifarch aarch64
 %patch226 -p1 -b .1354671
 %endif
+%patch230 -p1 -b .1497932
 
 %patch402 -p1 -b .1196777
 %patch406 -p1 -b .256180
@@ -320,9 +350,10 @@ This package contains results of tests executed during build.
 %endif
 %endif
 %patch413 -p1 -b .1353817
+%patch415 -p1 -b .1405267
 
-#CSD patch
-%patch600 -p1 -b .rb179444
+# Debian extension patch
+%patch500 -p1 -b .440908
 
 # Patch for big endian platforms only
 %if 0%{?big_endian}
@@ -334,7 +365,6 @@ This package contains results of tests executed during build.
 %{__cp} %{SOURCE10} .mozconfig
 %if %{official_branding}
 echo "ac_add_options --enable-official-branding" >> .mozconfig
-echo "ac_add_options --with-branding=browser/branding/nightly" >> .mozconfig
 %endif
 %{__cp} %{SOURCE24} mozilla-api-key
 %{__cp} %{SOURCE27} google-api-key
@@ -342,7 +372,6 @@ echo "ac_add_options --with-branding=browser/branding/nightly" >> .mozconfig
 %if %{?system_nss}
 echo "ac_add_options --with-system-nspr" >> .mozconfig
 echo "ac_add_options --with-system-nss" >> .mozconfig
-echo "ac_add_options BINDGEN_CFLAGS=$(pkg-config nspr --cflags)" >> .mozconfig
 %else
 echo "ac_add_options --without-system-nspr" >> .mozconfig
 echo "ac_add_options --without-system-nss" >> .mozconfig
@@ -572,25 +601,24 @@ EOF
 
 DESTDIR=$RPM_BUILD_ROOT make -C objdir install
 
-%{__mv} -Tf $RPM_BUILD_ROOT/%{_libdir}/firefox $RPM_BUILD_ROOT/%{mozappdir}
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
 
 desktop-file-install --dir $RPM_BUILD_ROOT%{_datadir}/applications %{SOURCE20}
 
 # set up the firefox start script
 %{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
-%{__cat} %{SOURCE21} > $RPM_BUILD_ROOT%{_bindir}/%{name}
-%{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/%{name}
+%{__cat} %{SOURCE21} > $RPM_BUILD_ROOT%{_bindir}/firefox
+%{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
-%{__install} -p -D -m 644 %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/%{name}.1
+%{__install} -p -D -m 644 %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
 
 %{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/firefox-config
 %{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/update-settings.ini
 
-for s in 16 32 48; do
+for s in 16 22 24 32 48 256; do
     %{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps
-    %{__cp} -p browser/branding/nightly/default${s}.png \
-               $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps/%{name}.png
+    %{__cp} -p browser/branding/official/default${s}.png \
+               $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps/firefox.png
 done
 
 # Install hight contrast icon
@@ -776,10 +804,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
-%{_bindir}/%{name}
+%{_bindir}/firefox
 %{mozappdir}/firefox
 %{mozappdir}/firefox-bin
 %doc %{_mandir}/man1/*
+%dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/*
 %dir %{_datadir}/mozilla/extensions/*
 %dir %{_libdir}/mozilla/extensions/*
@@ -803,13 +832,17 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/browser/omni.ja
 %{mozappdir}/browser/icons
 %{mozappdir}/chrome.manifest
+%{mozappdir}/run-mozilla.sh
 %{mozappdir}/application.ini
 %{mozappdir}/pingsender
 %exclude %{mozappdir}/removed-files
-%{_datadir}/icons/hicolor/16x16/apps/%{name}.png
-%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
-%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
-%{_datadir}/icons/hicolor/symbolic/apps/firefox-nightly-symbolic.svg
+%{_datadir}/icons/hicolor/16x16/apps/firefox.png
+%{_datadir}/icons/hicolor/22x22/apps/firefox.png
+%{_datadir}/icons/hicolor/24x24/apps/firefox.png
+%{_datadir}/icons/hicolor/256x256/apps/firefox.png
+%{_datadir}/icons/hicolor/32x32/apps/firefox.png
+%{_datadir}/icons/hicolor/48x48/apps/firefox.png
+%{_datadir}/icons/hicolor/symbolic/apps/firefox-symbolic.svg
 %if %{enable_mozilla_crashreporter}
 %{mozappdir}/crashreporter
 %{mozappdir}/crashreporter.ini
@@ -834,62 +867,67 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/libfreeblpriv3.chk
 %{mozappdir}/libnssdbm3.chk
 %{mozappdir}/libsoftokn3.chk
+%exclude %{mozappdir}/libnssckbi.so
 %endif
 
 #---------------------------------------------------------------------
 
 %changelog
-* Sun Oct 15 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.6.20171015gitc5cf9de
-- Update patches
+* Fri Oct 6 2017 Martin Stransky <stransky@redhat.com> - 56.0-5
+- Enable Stylo again.
 
-* Sun Oct 15 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.5.20171015gitc5cf9de
-- Update to 58.0a1-20171015gitc5cf9de
+* Wed Oct 4 2017 Martin Stransky <stransky@redhat.com> - 56.0-4
+- Fixed rhbz#1497932 - Plug-Ins for example flash fails
+  because of unresolved symbols
 
-* Sat Oct 07 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.4.20171007gitaa721cc
-- Update to 58.0a1-20171007gitaa721cc
+* Fri Sep 29 2017 Martin Stransky <stransky@redhat.com> - 56.0-3
+- Enabled second arches.
 
-* Tue Oct 03 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.3.20171003git9a0edde
-- Update to 58.0a1-20171003git9a0edde
+* Mon Sep 25 2017 Martin Stransky <stransky@redhat.com> - 56.0-2
+- Update to 56.0 (B6)
 
-* Sun Oct 01 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.2.20171001git2980334
-- Update to 58.0a1-20171001git2980334
+* Fri Sep 15 2017 Martin Stransky <stransky@redhat.com> - 55.0.3-4
+- Added switch to build mozbz#1399611 and disable it now
+  for various regressions.
 
-* Sat Sep 23 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.1.20170915git049fa07
-- Update to 58.0a1-20170915git049fa07
+* Thu Sep 14 2017 Martin Stransky <stransky@redhat.com> - 55.0.3-3
+- Added experimental patch for mozbz#1399611
 
-* Fri Sep 15 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.8.20170915git7172020
-- Update to 57.0a1-20170915git7172020
+* Thu Sep 14 2017 Ville Skyttä <ville.skytta@iki.fi> - 55.0.3-2
+- Own the %%{_sysconfdir}/%%{name} dir
 
-* Sun Sep 10 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.7.20170915gitd71460b
-- Update to 57.0a1-20170915gitd71460b
+* Fri Sep  1 2017 Jan Horak <jhorak@redhat.com> - 55.0.3-1
+- Update to 55.0.3
 
-* Sat Sep 02 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.6.20170910gitd71460b
-- Update to 57.0a1-20170910gitd71460b
+* Thu Aug 24 2017 Martin Stransky <stransky@redhat.com> - 55.0.2-3
+- Enable to build with nspr-4.16.
 
-* Sat Sep 02 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.5.20170902gite377ab3
-- Update to 57.0a1-20170826gite377ab3
+* Wed Aug 23 2017 Martin Stransky <stransky@redhat.com> - 55.0.2-2
+- Rebuilt to remove wrong dependency to nspr-4.16.
 
-* Sat Aug 26 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.4.20170826gitb818d73
-- Update to 57.0a1-20170826gitb818d73
+* Fri Aug 18 2017 Martin Stransky <stransky@redhat.com> - 55.0.2-1
+- Updated to 55.0.2
 
-* Sun Aug 20 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.3.20170820git9359f5b
-- Update to 57.0a1-20170820git9359f5b
+* Mon Aug 14 2017 Jan Horak <jhorak@redhat.com> - 55.0.1-1
+- Update to 55.0.1
 
-* Sat Aug 12 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.2.20170812git5a4357c
-- Update to 57.0a1-20170812git5a4357c
+* Fri Aug 11 2017 Jan Horak <jhorak@redhat.com> - 55.0-6
+- Do not require nss and nspr which we build package against
 
-* Sat Aug 05 2017 Robert-André Mauchin <zebob.m@gmail.com> - 57.0a1-0.1.20170805gite0883c8
-- Update to 57.0a1-20170805gite0883c8
+* Tue Aug 8 2017 Martin Stransky <stransky@redhat.com> - 55.0-5
+- Rebuild
 
-* Wed Jul 26 2017 Robert-André Mauchin <zebob.m@gmail.com> - 56.0a1-0.3.20170726git22f1bfd
-- Update to 56.0a1-20170729git22f1bfd
+* Mon Aug 7 2017 Martin Stransky <stransky@redhat.com> - 55.0-2
+- Updated to 55.0 (B3)
 
-* Wed Jul 26 2017 Robert-André Mauchin <zebob.m@gmail.com> - 56.0a1-0.2.20170726git65bbd05
-- Update to 56.0a1-20170726git65bbd05
-- Enable Stylo
+* Wed Aug 2 2017 Martin Stransky <stransky@redhat.com> - 55.0-1
+- Updated to 55.0 (B1)
 
-* Fri Jul 21 2017 Robert-André Mauchin <zebob.m@gmail.com> - 56.0a1-0.1.20170722git051dc17
-- Update to 56.0a1-20170722git051dc17
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 54.0.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
+* Tue Jul 25 2017 Jan Horak <jhorak@redhat.com> - 54.0.1-1
+- Update to 54.0.1
 
 * Tue Jun 13 2017 Jan Horak <jhorak@redhat.com> - 54.0-2
 - Update to 54.0 (B3)

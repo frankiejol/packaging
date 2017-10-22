@@ -1,7 +1,7 @@
 %global _dwz_low_mem_die_limit 0
 
 Name:           powerline-go
-Version:        1.5.1
+Version:        1.8.1
 Release:        1%{?dist}
 Summary:        A beautiful and useful low-latency prompt for your shell, written in go
 License:        GPLv3 
@@ -13,8 +13,12 @@ ExclusiveArch:  %{?go_arches:%{go_arches}}%{!?go_arches:%{ix86} x86_64 aarch64 %
 # If go_compiler is not set to 1, there is no virtual provide. Use golang instead.
 BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
 
+BuildRequires:  golang(github.com/mattn/go-runewidth)
+BuildRequires:  golang(golang.org/x/crypto/ssh/terminal)
 BuildRequires:  golang(golang.org/x/sys/unix)
 BuildRequires:  golang(golang.org/x/text/width)
+BuildRequires:  golang(gopkg.in/yaml.v2)
+
 
 %description
 A Powerline like prompt for Bash, ZSH and Fish.
@@ -50,8 +54,10 @@ install -p -D -m 0755 ./powerline-go %{buildroot}%{_bindir}/powerline-go
 
 
 %changelog
+* Fri Oct 20 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.8.1-1
+- Upstream release 1.8.1
 * Sat Sep 02 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.5.1-1
-- Upstream release v1.5.1
+- Upstream release 1.5.1
 * Fri Sep 01 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.5.0-1
 - Initial RPM release
 

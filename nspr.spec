@@ -1,7 +1,7 @@
 Summary:        Netscape Portable Runtime
 Name:           nspr
 Version:        4.17.0
-Release:        1.beta1%{?dist}
+Release:        1%{?dist}
 License:        MPLv2.0
 URL:            http://www.mozilla.org/projects/nspr/
 Group:          System Environment/Libraries
@@ -11,7 +11,7 @@ Conflicts:      filesystem < 3
 # Sources available at ftp://ftp.mozilla.org/pub/mozilla.org/nspr/releases/
 # When hg tag based snapshots are being used, refer to hg documentation on
 # mozilla.org and check out subdirectory mozilla/nsprpub.
-Source0:        https://hg.mozilla.org/projects/nspr/archive/NSPR_4_17_BETA1.tar.gz
+Source0:        https://hg.mozilla.org/projects/nspr/archive/NSPR_4_17_RTM.tar.gz
 Source1:        nspr-config.xml
 
 Patch1:         nspr-config-pc.patch
@@ -35,7 +35,7 @@ Header files for doing development with the Netscape Portable Runtime.
 
 %prep
 
-%setup -q -n nspr-NSPR_4_17_BETA1
+%setup -q -n nspr-NSPR_4_17_RTM
 
 
 # Original nspr-config is not suitable for our distribution,
@@ -145,8 +145,8 @@ done
 %{_mandir}/man*/*
 
 %changelog
-* Sun Sep  3 2017 Robert-André Mauchin <zebob.m@gmail.com> - 4.17.0-1.beta1
-- Update to NSPR 4.17 beta1
+* Sat Oct  7 2017 Robert-André Mauchin <zebob.m@gmail.com> - 4.17.0-1
+- Update to NSPR 4.17 RTM
 
 * Thu Aug  3 2017 Daiki Ueno <dueno@redhat.com> - 4.16.0-1
 - Update to NSPR 4.16

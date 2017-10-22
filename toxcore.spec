@@ -1,11 +1,13 @@
 Name:           toxcore 
-Version:        0.1.9
-Release:        2%{?dist}
+Version:        0.1.10
+Release:        1%{?dist}
 Summary:        Peer to peer instant messenger
 
 License:        GPLv3
 URL:            https://github.com/TokTok/c-toxcore
-Source0:        https://github.com/TokTok/c-toxcore/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        https://github.com/TokTok/c-toxcore/archive/v%{version}/%{name}-%{version}.tar.gz
+
+Patch0:         toxcore-0.1.10-fix_obsolete_m4s.patch
 
 BuildRequires:  gcc
 BuildRequires:  libtool
@@ -43,7 +45,7 @@ autoreconf -vif
 
 
 %install
-%make_install INSTALL_ROOT=$RPM_BUILD_ROOT
+%make_install INSTALL_ROOT=%{buildroot}
 find %{buildroot} -regex ".*\.la$" | xargs rm -f --
 
 
@@ -56,10 +58,10 @@ find %{buildroot} -regex ".*\.la$" | xargs rm -f --
 %files
 %license COPYING
 %doc README.md CHANGELOG.md
-%{_libdir}/libtoxav.so*
-%{_libdir}/libtoxcore.so*
-%{_libdir}/libtoxdns.so*
-%{_libdir}/libtoxencryptsave.so*
+%{_libdir}/libtoxav.so.*
+%{_libdir}/libtoxcore.so.*
+%{_libdir}/libtoxdns.so.*
+%{_libdir}/libtoxencryptsave.so.*
 
 
 %files devel
@@ -74,6 +76,9 @@ find %{buildroot} -regex ".*\.la$" | xargs rm -f --
 
 
 %changelog
+* Thu Oct 12 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.1.10-1
+- New upstream release 0.1.10
+
 * Fri Aug 18 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.1.9-2
 - Fix Requires dependencies
 

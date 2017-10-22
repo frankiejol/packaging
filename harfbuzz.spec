@@ -1,6 +1,6 @@
 Name:           harfbuzz
-Version:        1.4.8
-Release:        2%{?dist}
+Version:        1.6.0
+Release:        1%{?dist}
 Summary:        Text shaping library
 
 License:        MIT
@@ -13,6 +13,7 @@ BuildRequires:  glib2-devel
 BuildRequires:  libicu-devel >= 59.1
 BuildRequires:  graphite2-devel
 BuildRequires:  gtk-doc
+
 
 %description
 HarfBuzz is an implementation of the OpenType Layout engine.
@@ -80,6 +81,15 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %{_libdir}/libharfbuzz-icu.so.*
 
 %changelog
+* Mon Oct 16 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.6.0-1
+- Update to 1.6.0 version
+
+* Wed Sep 06 2017 Parag Nemade <pnemade AT redhat DOT com> - 1.5.1-1
+- Update to 1.5.1 version
+
+* Thu Aug 24 2017 Parag Nemade <pnemade AT redhat DOT com> - 1.5.0-1
+- Update to 1.5.0 version
+
 * Sun Aug 20 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.4.8-2
 - Depend on latest icu
 

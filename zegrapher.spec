@@ -2,21 +2,14 @@
 
 Name:           zegrapher
 Summary:        Free and opensource math graphing software
-Version:        3.0.1
-Release:        2%{?dist}
+Version:        3.0.2
+Release:        1%{?dist}
 License:        GPLv3+
 
 URL:            https://www.zegrapher.com/
 Source0:        https://github.com/AdelKS/%{altname}/archive/v%{version}/%{altname}-%{version}.tar.gz
 
-#https://github.com/AdelKS/ZeGrapher/pull/5
-Patch0:         0001-add_appstream_file.patch
-#https://github.com/AdelKS/ZeGrapher/pull/4
-Patch1:         0002-add_install_method.patch
-#https://github.com/AdelKS/ZeGrapher/pull/6
-Patch2:         0003-fix_desktop_file.patch
-#https://github.com/AdelKS/ZeGrapher/pull/7
-Patch3:         0004-fix_permissions.patch
+Patch0:         zegrapher-3.0.2-fix_appdata.patch
 
 BuildRequires:  boost-devel
 BuildRequires:  pkgconfig(Qt5)
@@ -87,6 +80,9 @@ update-desktop-database &> /dev/null ||:
 
 
 %changelog
+* Wed Oct 11 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.0.2-1
+- Upstream release 3.0.2
+
 * Tue Sep 26 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.0.1-2
 - Added patches to fix permissions, fix desktop file, add appdata and add install method
 
