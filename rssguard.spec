@@ -1,11 +1,14 @@
 Name:           rssguard
 Version:        3.5.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Simple yet powerful feed reader
 
 License:        GPLv3+
 URL:            https://github.com/martinrotter/rssguard
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+
+# Qt5WebEngine is only available on those architectures
+ExclusiveArch:  %{qt5_qtwebengine_arches}
 
 BuildRequires:  pkgconfig(Qt5)
 BuildRequires:  pkgconfig(Qt5WebEngine)
@@ -54,5 +57,7 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/com.gith
 
 
 %changelog
+* Tue Oct 31 2017 Robert-André Mauchin <zebob.m@gmail.com> 3.5.4-2
+- Added ExclusiveArch
 * Tue Oct 31 2017 Robert-André Mauchin <zebob.m@gmail.com> 3.5.4-1
 - First RPM release
