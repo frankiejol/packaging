@@ -1,11 +1,11 @@
 Name:           toxcore 
 Version:        0.1.10
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Peer to peer instant messenger
 
-License:        GPLv3
+License:        GPLv3+
 URL:            https://github.com/TokTok/c-toxcore
-Source0:        https://github.com/TokTok/c-toxcore/archive/v%{version}/%{name}-%{version}.tar.gz
+Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 Patch0:         toxcore-0.1.10-fix_obsolete_m4s.patch
 
@@ -21,9 +21,10 @@ Tox is a peer to peer (serverless) instant messenger aimed at making
 security and privacy easy to obtain for regular users. It uses NaCl 
 for its encryption and authentication.
 
+
 %package devel
 Summary:        Development files for Toxcore 
-Requires:       %{name}%{?_isa} = %{version}-%{release}, pkgconfig
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 
 %description devel
@@ -46,12 +47,10 @@ autoreconf -vif
 
 %install
 %make_install INSTALL_ROOT=%{buildroot}
-find %{buildroot} -regex ".*\.la$" | xargs rm -f --
+find %{buildroot} -name '*.la' -delete
 
 
 %post -p /sbin/ldconfig
-
-
 %postun -p /sbin/ldconfig
 
 
@@ -76,6 +75,9 @@ find %{buildroot} -regex ".*\.la$" | xargs rm -f --
 
 
 %changelog
+* Tue Oct 31 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.1.10-2
+- Clean-up the SPEC
+
 * Thu Oct 12 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.1.10-1
 - New upstream release 0.1.10
 
