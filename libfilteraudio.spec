@@ -1,24 +1,17 @@
-%ifarch x86_64
-%global libdir lib64
-%else
-%global libdir lib
-%endif
+Name:       libfilteraudio
+Version:    0.0.1
+Release:    2%{?dist}
+Summary:    Lightweight audio filtering library made from webrtc code
 
-Name:	        libfilteraudio
-Version:	0.0.1
-Release:	1%{?dist}
-Summary:	Lightweight audio filtering library made from webrtc code
-
-License:	BSD
-URL:		https://github.com/irungentoo/filter_audio/
-Source0:	https://github.com/irungentoo/filter_audio/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+License:    BSD
+URL:        https://github.com/irungentoo/filter_audio/
+Source0:    %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(portaudio-2.0)
 BuildRequires:  pkgconfig(sndfile)
-Requires:	portaudio
-Requires:	libsndfile
+
 
 %description
 Lightweight audio filtering library made from webrtc code.
@@ -26,7 +19,7 @@ Lightweight audio filtering library made from webrtc code.
 
 %package devel
 Summary:        Development files for libfilteraudio
-Requires:       %{name}%{?_isa} = %{version}-%{release}, pkgconfig
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 
 %description devel
@@ -39,18 +32,22 @@ filtering library made from webrtc code.
 
 
 %build
-export CFLAGS=-g
+export CFLAGS="%{optflags}"
 %make_build
 
 
 %install
-%make_install PREFIX=/usr LIBDIR=%{libdir}
-find %{buildroot} -regex ".*\.a$" | xargs rm -f --
+%make_install PREFIX=%{_prefix} LIBDIR=%{_lib}
+find %{buildroot} -name '*.a' -delete
+
+
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 
 %files
 %doc README
-%{_libdir}/libfilteraudio.so*
+%{_libdir}/libfilteraudio.so.*
 
 
 %files devel
@@ -60,6 +57,8 @@ find %{buildroot} -regex ".*\.a$" | xargs rm -f --
 
 
 %changelog
+* Tue Oct 31 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.0.1-2
+- Clean-up the SPEC
 * Sat Jul 29 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.0.1-1
 - First RPM release
 

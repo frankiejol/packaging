@@ -4,15 +4,15 @@
 %global crate fd-find
 
 Name:           %{crate}
-Version:        4.0.0
-Release:        2%{?dist}
+Version:        5.0.1
+Release:        1%{?dist}
 Summary:        fd is a simple, fast and user-friendly alternative to find.
 
-License:        MIT
+License:        MIT or ASL 2.0
 URL:            https://crates.io/crates/fd-find
 Source0:        https://crates.io/api/v1/crates/%{crate}/%{version}/download#/%{crate}-%{version}.crate
 
-Patch0:         fd-find-4.0.0-fix_metadata.patch
+Patch0:         fd-find-5.0.1-fix_metadata.patch
 
 ExclusiveArch:  %{rust_arches}
 
@@ -22,8 +22,12 @@ BuildRequires:  (crate(ansi_term) >= 0.10.0 with crate(ansi_term) < 0.11.0)
 BuildRequires:  (crate(atty) >= 0.2.0 with crate(atty) < 0.3.0)
 BuildRequires:  (crate(clap) >= 2.26.0 with crate(clap) < 3.0.0)
 BuildRequires:  (crate(ignore) >= 0.2.0 with crate(ignore) < 0.3.0)
+BuildRequires:  (crate(lazy_static) >= 0.2.9 with crate(lazy_static) < 0.3.0)
+BuildRequires:  (crate(libc) >= 0.2.0 with crate(libc) < 0.3.0)
 BuildRequires:  (crate(num_cpus) >= 1.6.2 with crate(num_cpus) < 2.0.0)
 BuildRequires:  (crate(regex) >= 0.2.0 with crate(regex) < 0.3.0)
+BuildRequires:  (crate(regex-syntax) >= 0.4.0 with crate(regex-syntax) < 0.5.0)
+BuildRequires:  (crate(shell-escape) >= 0.1.3 with crate(shell-escape) < 0.2.0)
 # [build-dependencies]
 BuildRequires:  (crate(clap) >= 2.26.0 with crate(clap) < 3.0.0)
 %if %{with check}
@@ -31,7 +35,6 @@ BuildRequires:  (crate(clap) >= 2.26.0 with crate(clap) < 3.0.0)
 BuildRequires:  (crate(diff) >= 0.1.0 with crate(diff) < 0.2.0)
 BuildRequires:  (crate(tempdir) >= 0.3.0 with crate(tempdir) < 0.4.0)
 %endif
-Requires:       bash-completion
 
 %description
 %{summary}.
@@ -45,6 +48,10 @@ Requires:       bash-completion
 
 %install
 %cargo_install
+
+# man page
+install -D -p -m 644 doc/fd.1 \
+    %{buildroot}%{_mandir}/man1/fd.1
 
 # bash completion
 install -D -p -m 644 target/release/build/%{name}-*/out/fd.bash-completion \
@@ -63,9 +70,9 @@ install -D -p -m 644 target/release/build/%{name}-*/out/_fd \
 %cargo_test
 %endif
 
-%files
+%files       -n %{crate}
 %doc README.md
-%license LICENSE
+%license LICENSE-APACHE LICENSE-MIT
 %{_bindir}/fd
 %{_datadir}/bash-completion/completions/fd
 %dir %{_datadir}/fish
@@ -74,8 +81,11 @@ install -D -p -m 644 target/release/build/%{name}-*/out/_fd \
 %dir %{_datadir}/zsh
 %dir %{_datadir}/zsh/vendor-completions
 %{_datadir}/zsh/vendor-completions/_fd
+%{_mandir}/man1/fd.1*
 
 %changelog
+* Fri Oct 27 2017 Robert-André Mauchin <zebob.m@gmail.com> - 5.0.1-1
+- Upstream release 5.0.1
 * Sat Oct 14 2017 Robert-André Mauchin <zebob.m@gmail.com> - 4.0.0-2
 - Fix directories ownership
 * Sun Oct 08 2017 Robert-André Mauchin <zebob.m@gmail.com> - 4.0.0-1
