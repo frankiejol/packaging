@@ -5,7 +5,7 @@ Summary:        Simple yet powerful feed reader
 
 # GPLv3+: main program
 # BSD: src/dynamic-shortcuts, src/miscellaneous/simplecrypt,
-#      src/qtsingleapplication, src/network-web/googlesuggest
+#      src/network-web/googlesuggest
 # AGPLv3: src/network-web/oauth2service
 License:        GPLv3+ and BSD and AGPLv3
 URL:            https://github.com/martinrotter/rssguard
@@ -35,6 +35,7 @@ using Qt framework which supports online feed synchronization.
 find src -type f | xargs chmod 0644
 chmod 0644 resources/desktop/com.github.rssguard.appdata.xml
 sed -i 's/\r$//' README.md
+rm -rf src/qtsingleapplication
 
 %build
 mkdir build && pushd build
