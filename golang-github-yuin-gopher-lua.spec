@@ -106,6 +106,9 @@ providing packages with %{import_path} prefix.
 %prep
 %autosetup -n %{repo}-%{commit}
 
+find . -name '.gitignore' -delete
+sed -i '1{\@^#!../lua@d}' _lua5.1-tests/all.lua
+
 %build
 %install
 # source codes for building projects

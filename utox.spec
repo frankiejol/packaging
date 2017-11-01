@@ -34,7 +34,7 @@ Requires:       hicolor-icon-theme
 
 
 %prep
-%autosetup
+%autosetup -n uTox-%{version}
 
 
 %build

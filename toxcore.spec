@@ -5,7 +5,8 @@ Summary:        Peer to peer instant messenger
 
 # GPLv3+: main library
 # BSD: toxencryptsave/crypto_pwhash_scryptsalsa208sha256
-License:        GPLv3+ and BSD
+# ISC: toxcore/crypto_core_mem.c
+License:        GPLv3+ and BSD and ISC
 URL:            https://github.com/TokTok/c-toxcore
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
