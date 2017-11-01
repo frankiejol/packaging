@@ -8,7 +8,7 @@ Summary:    The lightweight Tox client
 License:    GPLv3+
 URL:        https://github.com/uTox/uTox/
 Source0:    %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
-Source1:    %{name}.appdata.xml
+Source1:    %{lcname}.appdata.xml
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
@@ -57,7 +57,7 @@ install -Dp -m 644 %{SOURCE1} %{buildroot}/%{_datadir}/appdata/%{name}.appdata.x
 %check
 ctest -V %{?_smp_mflags}
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{lcname}.desktop
-appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{name}.appdata.xml
+appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{lcname}.appdata.xml
 
 
 %post
@@ -79,7 +79,7 @@ fi
 %license LICENSE
 %doc README.md CHANGELOG.md
 %{_bindir}/%{lcname}
-%{_datadir}/appdata/%{name}.appdata.xml
+%{_datadir}/appdata/%{lcname}.appdata.xml
 %{_datadir}/applications/%{lcname}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{lcname}*
 %{_mandir}/man1/%{lcname}.1*
@@ -88,10 +88,13 @@ fi
 %changelog
 * Tue Oct 31 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.16.1-2
 - Clean-up the SPEC
+
 * Thu Oct 12 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.16.1-1
 - New upstream release 0.16.1
+
 * Fri Aug 18 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.15.0-2
 - Added appdata.xml
 - Fixed Requires dependencies
+
 * Sat Jul 29 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.15.0-1
 - First RPM release

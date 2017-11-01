@@ -1,17 +1,24 @@
 Name:           rssguard
 Version:        3.5.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Simple yet powerful feed reader
 
-License:        GPLv3+
+# GPLv3+: main program
+# BSD: src/dynamic-shortcuts, src/miscellaneous/simplecrypt,
+#      src/qtsingleapplication, src/network-web/googlesuggest
+# AGPLv3: src/network-web/oauth2service
+License:        GPLv3+ and BSD and AGPLv3
 URL:            https://github.com/martinrotter/rssguard
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+
+Patch0:         rssguard-3.5.4-unbundle_qtsinglecoreapplication.patch
 
 # Qt5WebEngine is only available on those architectures
 ExclusiveArch:  %{qt5_qtwebengine_arches}
 
 BuildRequires:  pkgconfig(Qt5)
 BuildRequires:  pkgconfig(Qt5WebEngine)
+BuildRequires:  qtsingleapplication-qt5-devel
 BuildRequires:  qt5-linguist
 BuildRequires:  libappstream-glib
 BuildRequires:  desktop-file-utils
@@ -31,7 +38,7 @@ sed -i 's/\r$//' README.md
 
 %build
 mkdir build && pushd build
-%{qmake_qt5} ../rssguard.pro -r CONFIG+=debug LRELEASE_EXECUTABLE=lrelease-qt5 PREFIX=%{_prefix}
+%{qmake_qt5} ../rssguard.pro -r LRELEASE_EXECUTABLE=lrelease-qt5 PREFIX=%{_prefix}
 %make_build
 popd
 
@@ -57,7 +64,12 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/com.gith
 
 
 %changelog
+* Wed Nov 01 2017 Robert-André Mauchin <zebob.m@gmail.com> 3.5.4-3
+- Unbundle qtsinglecoreapplication
+- Correct licensing
+
 * Tue Oct 31 2017 Robert-André Mauchin <zebob.m@gmail.com> 3.5.4-2
 - Added ExclusiveArch
+
 * Tue Oct 31 2017 Robert-André Mauchin <zebob.m@gmail.com> 3.5.4-1
 - First RPM release

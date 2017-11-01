@@ -46,7 +46,7 @@ autoreconf -vif
 
 
 %install
-%make_install INSTALL_ROOT=%{buildroot}
+%make_install
 find %{buildroot} -name '*.la' -delete
 
 

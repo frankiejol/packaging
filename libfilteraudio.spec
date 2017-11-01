@@ -33,6 +33,7 @@ filtering library made from webrtc code.
 
 %build
 export CFLAGS="%{optflags}"
+export LDFLAGS="%{__global_ldflags}"
 %make_build
 
 
@@ -59,6 +60,7 @@ find %{buildroot} -name '*.a' -delete
 %changelog
 * Tue Oct 31 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.0.1-2
 - Clean-up the SPEC
+
 * Sat Jul 29 2017 Robert-André Mauchin <zebob.m@gmail.com> 0.0.1-1
 - First RPM release
 
