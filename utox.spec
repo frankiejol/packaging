@@ -1,6 +1,4 @@
-%global lcname utox
-
-Name:       uTox
+Name:       utox
 Version:    0.16.1
 Release:    2%{?dist}
 Summary:    The lightweight Tox client
@@ -8,7 +6,7 @@ Summary:    The lightweight Tox client
 License:    GPLv3+
 URL:        https://github.com/uTox/uTox/
 Source0:    %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
-Source1:    %{lcname}.appdata.xml
+Source1:    %{name}.appdata.xml
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
@@ -56,8 +54,8 @@ install -Dp -m 644 %{SOURCE1} %{buildroot}/%{_datadir}/appdata/%{name}.appdata.x
 
 %check
 ctest -V %{?_smp_mflags}
-desktop-file-validate %{buildroot}/%{_datadir}/applications/%{lcname}.desktop
-appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{lcname}.appdata.xml
+desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
+appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{name}.appdata.xml
 
 
 %post
@@ -78,11 +76,11 @@ fi
 %files
 %license LICENSE
 %doc README.md CHANGELOG.md
-%{_bindir}/%{lcname}
-%{_datadir}/appdata/%{lcname}.appdata.xml
-%{_datadir}/applications/%{lcname}.desktop
-%{_datadir}/icons/hicolor/*/apps/%{lcname}*
-%{_mandir}/man1/%{lcname}.1*
+%{_bindir}/%{name}
+%{_datadir}/appdata/%{name}.appdata.xml
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/icons/hicolor/*/apps/%{name}*
+%{_mandir}/man1/%{name}.1*
 
 
 %changelog
