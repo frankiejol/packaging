@@ -12,7 +12,6 @@ BuildRequires:  gcc-c++
 BuildRequires:  cmake
 BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
-BuildRequires:  libasan
 BuildRequires:  pkgconfig(check)
 BuildRequires:  pkgconfig(dbus-1)
 BuildRequires:  pkgconfig(filteraudio)
@@ -40,7 +39,7 @@ Requires:       hicolor-icon-theme
 %build
 mkdir build
 pushd build
-%cmake ..
+%cmake .. -DENABLE_ASAN=OFF
 %make_build
 popd
 
