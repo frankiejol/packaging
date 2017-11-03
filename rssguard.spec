@@ -48,6 +48,7 @@ popd
 pushd build
 %make_install INSTALL_ROOT=%{buildroot}
 popd
+chmod 0755 %{buildroot}/%{_bindir}/%{name}
 
 
 %check

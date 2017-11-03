@@ -68,7 +68,7 @@ find %{buildroot} -name '*.la' -delete
 
 %files devel
 %license COPYING
-%{_includedir}/tox/*
+%{_includedir}/tox/
 %{_libdir}/libtoxav.so
 %{_libdir}/libtoxcore.so
 %{_libdir}/libtoxdns.so

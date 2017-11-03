@@ -3,7 +3,7 @@ Version:    0.16.1
 Release:    2%{?dist}
 Summary:    The lightweight Tox client
 
-License:    GPLv3+
+License:    MIT or GPLv3+
 URL:        https://github.com/uTox/uTox/
 Source0:    %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:    %{name}.appdata.xml
@@ -49,6 +49,7 @@ pushd build
 %make_install
 popd
 install -Dp -m 644 %{SOURCE1} %{buildroot}/%{_datadir}/appdata/%{name}.appdata.xml
+rm -rf %{buildroot}/%{_datadir}/icons/hicolor/14x14
 
 
 %check
