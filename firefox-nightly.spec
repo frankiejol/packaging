@@ -1,6 +1,6 @@
-%global commit0 1ebd2eff44617df3b82eea7d2f3ca1b60cc591a0 
+%global commit0 8c819aab74fa9399fd2e4860d85c63471264afea 
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global commitdate  20171029
+%global commitdate  20171110
 
 # Use ALSA backend?
 %define alsa_backend      0
@@ -97,7 +97,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox-nightly
 Version:        58.0a1
-Release:        0.8.%{commitdate}git%{shortcommit0}%{?pre_tag}%{?dist}
+Release:        0.10.%{commitdate}git%{shortcommit0}%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -152,7 +152,7 @@ Patch412:        mozilla-1337988.patch
 Patch413:        mozilla-1353817.patch
     
 # CSD patch
-Patch600:       rb179444.patch
+# Patch600:       rb179444.patch
 
 %if %{?system_nss}
 BuildRequires:  pkgconfig(nspr) >= %{nspr_version}
@@ -322,7 +322,7 @@ This package contains results of tests executed during build.
 %patch413 -p1 -b .1353817
 
 # CSD patch
-%patch600 -p1 -b .rb179444
+# %%patch600 -p1 -b .rb179444
 
 # Patch for big endian platforms only
 %if 0%{?big_endian}
@@ -520,7 +520,7 @@ MOZ_SMP_FLAGS=-j1
 [ "$RPM_BUILD_NCPUS" -ge 8 ] && MOZ_SMP_FLAGS=-j8
 %endif
 
-make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS" MOZ_SERVICES_SYNC="1"
+STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS" MOZ_SERVICES_SYNC="1" ./mach build 
 
 # create debuginfo for crash-stats.mozilla.com
 %if %{enable_mozilla_crashreporter}
@@ -839,6 +839,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Sun Nov 05 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.10.20171110git8c819aa
+- Update to 58.0a1-20171110git8c819aa
+
+* Sun Nov 05 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.9.20171105git38bf4c4
+- Update to 58.0a1-20171105git38bf4c4
+
 * Sun Oct 29 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.8.20171029git1ebd2ef
 - Update to 58.0a1-20171029git1ebd2ef
 

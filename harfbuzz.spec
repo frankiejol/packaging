@@ -1,5 +1,5 @@
 Name:           harfbuzz
-Version:        1.6.0
+Version:        1.6.3
 Release:        1%{?dist}
 Summary:        Text shaping library
 
@@ -81,6 +81,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %{_libdir}/libharfbuzz-icu.so.*
 
 %changelog
+* Sat Nov 11 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.6.3-1
+- Update to 1.6.3 version
+
 * Mon Oct 16 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.6.0-1
 - Update to 1.6.0 version
 

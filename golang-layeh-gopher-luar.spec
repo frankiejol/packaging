@@ -171,7 +171,6 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %files devel -f devel.file-list
 %license LICENSE
 %doc README.md
-%dir %{gopath}/src/layeh.com/gopher-luar
 %endif
 
 %if 0%{?with_unit_test} && 0%{?with_devel}

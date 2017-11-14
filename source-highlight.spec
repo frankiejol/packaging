@@ -98,7 +98,7 @@ fi
 
 %changelog
 * Sun Aug 20 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.1.8-15
-- Depends Boost 1.64
+- Depend on Boost 1.64
 
 * Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 3.1.8-14
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild

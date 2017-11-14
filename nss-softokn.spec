@@ -8,9 +8,6 @@
 %global dracut_modules_dir %{dracutlibdir}/modules.d/05nss-softokn/
 %global dracut_conf_dir %{dracutlibdir}/dracut.conf.d
 
-%global commit 6fb9c5396d52
-%global commitdate 20171004
-
 # Produce .chk files for the final stripped binaries
 #
 # NOTE: The LD_LIBRARY_PATH line guarantees shlibsign links
@@ -35,7 +32,7 @@ Name:             nss-softokn
 Version:          3.34.0
 # for Rawhide, please always use release >= 2
 # for Fedora release branches, please use release < 2 (1.0, 1.1, ...)
-Release:          2.%{commitdate}hg%{commit}%{?dist}
+Release:          2.beta5%{?dist}
 License:          MPLv2.0
 URL:              http://www.mozilla.org/projects/security/pki/nss/
 Group:            System Environment/Libraries
@@ -439,11 +436,14 @@ done
 %{_includedir}/nss3/shsign.h
 
 %changelog
+* Sat Nov 11 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.34.0-2.beta5
+- Update to NSS 3.34.0 beta5
+
 * Sat Oct  7 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.34.0-2.20171004hg6fb9c5396d52
-- Update to NSS 3.34.0
+- Update to NSS 3.34.0 20171004hg6fb9c5396d52
 
 * Sun Sep  3 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.33.0-2.20170816hg52e38f913220
-- Update to NSS 3.33.0
+- Update to NSS 3.33.0 20170816hg52e38f913220
 
 * Wed Aug 30 2017 Daiki Ueno <dueno@redhat.com> - 3.32.0-5
 - Update iquote.patch to really prefer in-tree headers over system headers

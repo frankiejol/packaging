@@ -44,7 +44,7 @@
 Name:           golang-%{provider}-%{project}-%{repo}
 Version:        0
 Release:        0.1.%{commitdate}git%{shortcommit}%{?dist}
-Summary:        clipboard for golang
+Summary:        Clipboard for golang
 License:        BSD
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
@@ -59,7 +59,7 @@ BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
 
 
 %description
-%{summary}
+%{summary}.
 
 %if 0%{?with_devel}
 %package devel
@@ -73,7 +73,7 @@ BuildArch:     noarch
 Provides:      golang(%{import_path}) = %{version}-%{release}
 
 %description devel
-%{summary}
+%{summary}.
 
 This package contains library source intended for
 building other packages which use import path with

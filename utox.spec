@@ -48,14 +48,14 @@ popd
 pushd build
 %make_install
 popd
-install -Dp -m 644 %{SOURCE1} %{buildroot}/%{_datadir}/appdata/%{name}.appdata.xml
+install -Dp -m 644 %{SOURCE1} %{buildroot}/%{_datadir}/metainfo/%{name}.appdata.xml
 rm -rf %{buildroot}/%{_datadir}/icons/hicolor/14x14
 
 
 %check
 ctest -V %{?_smp_mflags}
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
-appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{name}.appdata.xml
+appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/%{name}.appdata.xml
 
 
 %post
@@ -77,7 +77,7 @@ fi
 %license LICENSE
 %doc README.md CHANGELOG.md
 %{_bindir}/%{name}
-%{_datadir}/appdata/%{name}.appdata.xml
+%{_datadir}/metainfo/%{name}.appdata.xml
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}*
 %{_mandir}/man1/%{name}.1*

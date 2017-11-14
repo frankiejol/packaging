@@ -4,15 +4,12 @@
 %global unsupported_tools_directory %{_libdir}/nss/unsupported-tools
 %global allTools "certutil cmsutil crlutil derdump modutil pk12util signtool signver ssltap vfychain vfyserv"
 
-%global commit 6fb9c5396d52
-%global commitdate 20171004
-
 Summary:          Network Security Services
 Name:             nss
 Version:          3.34.0
 # for Rawhide, please always use release >= 2
 # for Fedora release branches, please use release < 2 (1.0, 1.1, ...)
-Release:          2.%{commitdate}hg%{commit}%{?dist}
+Release:          2.beta5%{?dist}
 License:          MPLv2.0
 URL:              http://www.mozilla.org/projects/security/pki/nss/
 Group:            System Environment/Libraries
@@ -753,11 +750,14 @@ done
 
 
 %changelog
+* Sat Nov 11 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.34.0-2.beta5
+- Update to NSS 3.34.0 beta5
+
 * Sat Oct  7 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.34.0-2.20171004hg6fb9c5396d52
-- Update to NSS 3.34.0
+- Update to NSS 3.34.0 20171004hg6fb9c5396d52
 
 * Sun Sep  3 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.33.0-2.20170816hg52e38f913220
-- Update to NSS 3.33.0
+- Update to NSS 3.33.0 20170816hg52e38f913220
 
 * Wed Aug 23 2017 Kai Engert <kaie@redhat.com> - 3.32.0-3
 - NSS libnssckbi.so has already been obsoleted by p11-kit-trust, rhbz#1484449

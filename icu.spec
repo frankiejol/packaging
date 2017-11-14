@@ -1,13 +1,13 @@
 #%%global debugtrace 1
 
 Name:      icu
-Version:   59.1
+Version:   60.1
 Release:   1%{?dist}
 Summary:   International Components for Unicode
 
 License:   MIT and UCD and Public Domain
 URL:       http://www.icu-project.org/
-Source0:   http://download.icu-project.org/files/icu4c/59.1/icu4c-59_1-src.tgz
+Source0:   http://download.icu-project.org/files/icu4c/60.1/icu4c-60_1-src.tgz
 Source1:   icu-config.sh
 
 BuildRequires: doxygen, autoconf, python
@@ -89,7 +89,8 @@ OPTIONS=$OPTIONS' --enable-debug --enable-tracing'
 sed -i 's|-nodefaultlibs -nostdlib||' config/mh-linux
 #rhbz#681941
 sed -i 's|^LIBS =.*|LIBS = -L../lib -licuuc -lpthread -lm|' i18n/Makefile
-sed -i 's|^LIBS =.*|LIBS = -nostdlib -L../lib -licuuc -licui18n -lc -lgcc|' io/Makefile
+# As of ICU 60.1 the -nostdlib in io/Makefile results in undefined reference to `__dso_handle'
+sed -i 's|^LIBS =.*|LIBS = -L../lib -licuuc -licui18n -lc -lgcc|' io/Makefile
 sed -i 's|^LIBS =.*|LIBS = -nostdlib -L../lib -licuuc -licule -lc|' layoutex/Makefile
 sed -i 's|^LIBS =.*|LIBS = -nostdlib -L../../lib -licutu -licuuc -lc|' tools/ctestfw/Makefile
 # As of ICU 52.1 the -nostdlib in tools/toolutil/Makefile results in undefined reference to `__dso_handle'
@@ -192,8 +193,11 @@ LD_LIBRARY_PATH=lib:stubdata:tools/ctestfw:$LD_LIBRARY_PATH bin/uconv -l
 
 
 %changelog
+* Sat Nov 11 2017 Robert-André Mauchin <zebob.m@gmail.com> - 60.1-1                      
+- Upstream release 60.1
+
 * Sun Aug 20 2017 Robert-André Mauchin <zebob.m@gmail.com> - 59.1-1                      
-- upgrade to upstream ICU 59.1
+- Upstream release 59.1
 
 * Wed Aug 02 2017 Fedora Release Engineering <releng@fedoraproject.org> - 57.1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild

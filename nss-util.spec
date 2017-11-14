@@ -1,13 +1,11 @@
 %global nspr_version 4.17.0
-%global commit 6fb9c5396d52
-%global commitdate 20171004
 
 Summary:          Network Security Services Utilities Library
 Name:             nss-util
 Version:          3.34.0
 # for Rawhide, please always use release >= 2
 # for Fedora release branches, please use release < 2 (1.0, 1.1, ...)
-Release:          2.%{commitdate}hg%{commit}%{?dist}
+Release:          2.beta5%{?dist}
 License:          MPLv2.0
 URL:              http://www.mozilla.org/projects/security/pki/nss/
 Group:            System Environment/Libraries
@@ -286,8 +284,11 @@ done
 %{_includedir}/nss3/templates/templates.c
 
 %changelog
+* Sat Nov 11 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.34.0-2.beta5
+- Update to NSS 3.34.0 beta5
+
 * Sat Oct  7 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.34.0-2.20171004hg6fb9c5396d52
-- Update to NSS 3.34.0
+- Update to NSS 3.34.0 20171004hg6fb9c5396d52
 
 * Sun Sep  3 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.33.0-2.20170816hg52e38f913220
 - Update to NSS 3.33.0
