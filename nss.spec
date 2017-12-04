@@ -1,15 +1,15 @@
-%global nspr_version 4.17.0
-%global nss_util_version 3.34.0
-%global nss_softokn_version 3.34.0
+%global nspr_version 4.18.0
+%global nss_util_version 3.34.1
+%global nss_softokn_version 3.34.1
 %global unsupported_tools_directory %{_libdir}/nss/unsupported-tools
 %global allTools "certutil cmsutil crlutil derdump modutil pk12util signtool signver ssltap vfychain vfyserv"
 
 Summary:          Network Security Services
 Name:             nss
-Version:          3.34.0
+Version:          3.34.1
 # for Rawhide, please always use release >= 2
 # for Fedora release branches, please use release < 2 (1.0, 1.1, ...)
-Release:          2.beta5%{?dist}
+Release:          2%{?dist}
 License:          MPLv2.0
 URL:              http://www.mozilla.org/projects/security/pki/nss/
 Group:            System Environment/Libraries
@@ -750,6 +750,9 @@ done
 
 
 %changelog
+* Sun Dec 03 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.34.1-2
+- Update to NSS 3.34.1
+
 * Sat Nov 11 2017 Robert-André Mauchin <zebob.m@gmail.com> - 3.34.0-2.beta5
 - Update to NSS 3.34.0 beta5
 

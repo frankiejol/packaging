@@ -1,5 +1,5 @@
 Name:       qTox
-Version:    1.12.1
+Version:    1.13.0
 Release:    1%{?dist}
 Summary:    Feature-rich Tox client
 
@@ -96,6 +96,9 @@ fi
 
 
 %changelog
+* Mon Nov 27 2017 Robert-André Mauchin <zebob.m@gmail.com> 1.13.0-1
+- New upstream release 1.13.0
+
 * Thu Oct 12 2017 Robert-André Mauchin <zebob.m@gmail.com> 1.12.1-1
 - New upstream release 1.12.1
 

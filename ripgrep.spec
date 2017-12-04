@@ -24,7 +24,7 @@ ExclusiveArch:  %{rust_arches}
 BuildRequires:  rust-packaging
 # [dependencies]
 BuildRequires:  (crate(atty) >= 0.2.2 with crate(atty) < 0.3.0)
-BuildRequires:  (crate(bytecount) >= 0.1.4 with crate(bytecount) < 0.2.0)
+BuildRequires:  (crate(bytecount) >= 0.2.0 with crate(bytecount) < 0.3.0)
 BuildRequires:  (crate(clap) >= 2.26.0 with crate(clap) < 3.0.0)
 BuildRequires:  (crate(encoding_rs) >= 0.7.0 with crate(encoding_rs) < 0.8.0)
 BuildRequires:  (crate(env_logger) >= 0.4.0 with crate(env_logger) < 0.5.0)
@@ -34,7 +34,7 @@ BuildRequires:  (crate(lazy_static) >= 0.2.0 with crate(lazy_static) < 0.3.0)
 BuildRequires:  (crate(libc) >= 0.2.0 with crate(libc) < 0.3.0)
 BuildRequires:  (crate(log) >= 0.3.0 with crate(log) < 0.4.0)
 BuildRequires:  (crate(memchr) >= 2.0.0 with crate(memchr) < 3.0.0)
-BuildRequires:  (crate(memmap) >= 0.5.0 with crate(memmap) < 0.6.0)
+BuildRequires:  (crate(memmap) >= 0.6.0 with crate(memmap) < 0.7.0)
 BuildRequires:  (crate(num_cpus) >= 1.0.0 with crate(num_cpus) < 2.0.0)
 BuildRequires:  (crate(regex) >= 0.2.1 with crate(regex) < 0.3.0)
 BuildRequires:  (crate(same-file) >= 1.0.0 with crate(same-file) < 2.0.0)

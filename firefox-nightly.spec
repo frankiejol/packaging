@@ -1,6 +1,6 @@
-%global commit0 8c819aab74fa9399fd2e4860d85c63471264afea 
+%global commit0 1aeab12df243afabd37b402df4a7c6b3f3da4323 
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global commitdate  20171110
+%global commitdate  20171202
 
 # Use ALSA backend?
 %define alsa_backend      0
@@ -96,8 +96,8 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox-nightly
-Version:        58.0a1
-Release:        0.10.%{commitdate}git%{shortcommit0}%{?pre_tag}%{?dist}
+Version:        59.0a1
+Release:        0.3.%{commitdate}git%{shortcommit0}%{?pre_tag}%{?dist}
 URL:            https://www.mozilla.org/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -126,7 +126,6 @@ Patch26:        build-icu-big-endian.patch
 Patch27:        mozilla-1335250.patch
 # Also fixes s390x: https://bugzilla.mozilla.org/show_bug.cgi?id=1376268
 Patch29:        build-big-endian.patch
-Patch31:        build-ppc64-s390x-curl.patch
 Patch34:        build-cubeb-pulse-arm.patch
 Patch35:        build-ppc-jit.patch
 Patch36:        build-missing-xlocale-h.patch
@@ -150,9 +149,6 @@ Patch410:        mozilla-1321521.patch
 Patch411:        mozilla-1321521-2.patch
 Patch412:        mozilla-1337988.patch
 Patch413:        mozilla-1353817.patch
-    
-# CSD patch
-# Patch600:       rb179444.patch
 
 %if %{?system_nss}
 BuildRequires:  pkgconfig(nspr) >= %{nspr_version}
@@ -290,7 +286,6 @@ This package contains results of tests executed during build.
 %patch25 -p1 -b .rhbz-1219542-s390
 %endif
 %patch29 -p1 -b .big-endian
-%patch31 -p1 -b .ppc64-s390x-curl
 # don't need that %patch34 -p1 -b .cubeb-pulse-arm
 %ifarch ppc ppc64 ppc64le
 %patch35 -p1 -b .ppc-jit
@@ -320,9 +315,6 @@ This package contains results of tests executed during build.
 %endif
 %endif
 %patch413 -p1 -b .1353817
-
-# CSD patch
-# %%patch600 -p1 -b .rb179444
 
 # Patch for big endian platforms only
 %if 0%{?big_endian}
@@ -801,7 +793,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{langpackdir}
 %endif
 %{mozappdir}/browser/omni.ja
-%{mozappdir}/browser/icons
 %{mozappdir}/chrome.manifest
 %{mozappdir}/application.ini
 %{mozappdir}/pingsender
@@ -839,7 +830,16 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Sun Nov 05 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.10.20171110git8c819aa
+* Sat Dec 02 2017 Robert-André Mauchin <zebob.m@gmail.com> - 59.0a1-0.3.20171202git1aeab12
+- Update to 59.0a1-20171202git1aeab12
+
+* Sat Nov 25 2017 Robert-André Mauchin <zebob.m@gmail.com> - 59.0a1-0.2.20171125git45a3df4
+- Update to 59.0a1-20171125git45a3df4
+
+* Sat Nov 18 2017 Robert-André Mauchin <zebob.m@gmail.com> - 59.0a1-0.1.20171118gitc9214da
+- Update to 59.0a1-20171118gitc9214da
+
+* Fri Nov 10 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.10.20171110git8c819aa
 - Update to 58.0a1-20171110git8c819aa
 
 * Sun Nov 05 2017 Robert-André Mauchin <zebob.m@gmail.com> - 58.0a1-0.9.20171105git38bf4c4
