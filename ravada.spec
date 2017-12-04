@@ -34,6 +34,7 @@ BuildRequires:  perl(Sys::Statistics::Linux)
 BuildRequires:  perl(Sys::Virt)
 BuildRequires:  perl(Test::Pod::Coverage)
 BuildRequires:  perl(Test::Perl::Critic)
+BuildRequires:  perl(Test::SQL::Data)
 BuildRequires:  perl(XML::LibXML)
 BuildRequires:  perl(YAML)
 # For tests
