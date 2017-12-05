@@ -14,8 +14,8 @@ BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::Perl::Critic)
 BuildRequires:  perl(Test::Pod::Coverage) >= 1.04
 BuildRequires:  perl(Test::Pod) >= 1.14
-BuildRequires:  perl(DBIx::Connector)
-BuildRequires:  perl(DBD::SQLite)
+BuildRequires:  perl(DBIx::Connector) >= 0.4.5
+BuildRequires:  perl(DBD::SQLite) >= 1.20
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description
@@ -40,7 +40,7 @@ make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
 make test
 
 %files
-%doc dist.ini INSTALL.md README.md
+%doc INSTALL.md README.md
 %{perl_vendorlib}/*
 %{_mandir}/man3/*
 

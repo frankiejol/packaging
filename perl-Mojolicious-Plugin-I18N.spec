@@ -6,7 +6,7 @@ License:        GPL+ or Artistic
 URL:            http://search.cpan.org/dist/Mojolicious-Plugin-I18N/
 Source0:        http://www.cpan.org/authors/id/S/SH/SHARIFULN/Mojolicious-Plugin-I18N-%{version}.tar.gz
 BuildArch:      noarch
-BuildRequires:  perl >= 0:5.010001
+BuildRequires:  perl >= 5.10.1
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(I18N::LangTags) >= 0.35
@@ -35,7 +35,7 @@ works with Mojolicious 4.0+.
 ./Build test
 
 %files
-%doc Changes META.json script
+%doc Changes script
 %{perl_vendorlib}/*
 %{_mandir}/man3/*
 

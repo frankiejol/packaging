@@ -6,7 +6,7 @@ License:        GPL+ or Artistic
 URL:            http://search.cpan.org/dist/Authen-Passphrase/
 Source0:        http://www.cpan.org/authors/id/Z/ZE/ZEFRAM/Authen-Passphrase-%{version}.tar.gz
 BuildArch:      noarch
-BuildRequires:  perl >= 0:5.006
+BuildRequires:  perl >= 5.6
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(Authen::DecHpwd) >= 2.003
@@ -30,7 +30,7 @@ BuildRequires:  perl(parent)
 BuildRequires:  perl(strict)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::Pod::Coverage)
-BuildRequires:  perl(Test::Pod)
+BuildRequires:  perl(Test::Pod) >= 1.00
 BuildRequires:  perl(warnings)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
@@ -58,7 +58,7 @@ class is to provide a consistent interface to them all, hiding the details.
 ./Build test
 
 %files
-%doc Changes META.json README
+%doc Changes README
 %{perl_vendorlib}/*
 %{_mandir}/man3/*
 

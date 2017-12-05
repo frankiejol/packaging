@@ -5,7 +5,7 @@ Summary:        String aspects of scalars
 License:        GPL+ or Artistic
 URL:            http://search.cpan.org/dist/Scalar-String/
 Source0:        http://www.cpan.org/authors/id/Z/ZE/ZEFRAM/Scalar-String-%{version}.tar.gz
-BuildRequires:  perl >= 0:5.006
+BuildRequires:  perl >= 5.6
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(bytes)
@@ -17,7 +17,7 @@ BuildRequires:  perl(parent)
 BuildRequires:  perl(strict)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::Pod::Coverage)
-BuildRequires:  perl(Test::Pod)
+BuildRequires:  perl(Test::Pod) >= 1.00
 BuildRequires:  perl(utf8)
 BuildRequires:  perl(warnings)
 BuildRequires:  perl(XSLoader)
@@ -47,7 +47,7 @@ find $RPM_BUILD_ROOT -type f -name '*.bs' -size 0 -delete
 ./Build test
 
 %files
-%doc Changes META.json README
+%doc Changes README
 %{perl_vendorarch}/auto/*
 %{perl_vendorarch}/Scalar*
 %{_mandir}/man3/*

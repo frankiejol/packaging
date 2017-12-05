@@ -35,7 +35,7 @@ make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
 make test
 
 %files
-%doc Changes META.json
+%doc Changes
 %{perl_vendorlib}/*
 %{_mandir}/man3/*
 

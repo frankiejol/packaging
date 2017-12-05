@@ -31,7 +31,7 @@ make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
 make test
 
 %files
-%doc Changes META.json README
+%doc Changes README
 %{perl_vendorarch}/auto/*
 %{perl_vendorarch}/Crypt*
 %{_mandir}/man3/*

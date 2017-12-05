@@ -5,7 +5,7 @@ Summary:        DEC VMS password hashing
 License:        GPLv2+
 URL:            http://search.cpan.org/dist/Authen-DecHpwd/
 Source0:        http://www.cpan.org/authors/id/Z/ZE/ZEFRAM/Authen-DecHpwd-%{version}.tar.gz
-BuildRequires:  perl >= 0:5.006
+BuildRequires:  perl >= 5.6
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(constant)
@@ -18,7 +18,7 @@ BuildRequires:  perl(Scalar::String)
 BuildRequires:  perl(strict)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::Pod::Coverage)
-BuildRequires:  perl(Test::Pod)
+BuildRequires:  perl(Test::Pod) >= 1.00
 BuildRequires:  perl(warnings)
 BuildRequires:  perl(XSLoader)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
@@ -44,7 +44,7 @@ find $RPM_BUILD_ROOT -type f -name '*.bs' -size 0 -delete
 ./Build test
 
 %files
-%doc Changes META.json README
+%doc Changes README
 %{perl_vendorarch}/auto/*
 %{perl_vendorarch}/Authen*
 %{_mandir}/man3/*
