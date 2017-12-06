@@ -4,13 +4,23 @@ Release:        1%{?dist}
 Summary:        Emulate MySQL PASSWORD() function
 License:        GPL+ or Artistic
 URL:            http://search.cpan.org/dist/Crypt-MySQL/
-Source0:        http://www.cpan.org/authors/id/I/IK/IKEBE/Crypt-MySQL-%{version}.tar.gz
+Source0:        https://www.cpan.org/authors/id/I/IK/IKEBE/Crypt-MySQL-%{version}.tar.gz
+BuildRequires:  gcc
+BuildRequires:  perl-devel
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(Digest::SHA1)
+BuildRequires:  perl(Exporter)
 BuildRequires:  perl(Module::Build)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(DBD::mysql)
+BuildRequires:  perl(DBI)
+BuildRequires:  perl(strict)
+BuildRequires:  perl(vars)
+BuildRequires:  perl(XSLoader)
+BuildRequires:  perl(warnings)
+Requires:       perl(Exporter)
+Requires:       perl(XSLoader)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description

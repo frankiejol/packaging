@@ -6,16 +6,21 @@ License:        GPL+ or Artistic
 URL:            https://github.com/frankiejol/Test-SQL-Data
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildArch:      noarch
+BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
+BuildRequires:  perl(Carp)
+BuildRequires:  perl(DBIx::Connector) >= 0.4.5
+BuildRequires:  perl(DBD::SQLite) >= 1.20
 BuildRequires:  perl(ExtUtils::MakeMaker)
-BuildRequires:  perl(YAML)
+BuildRequires:  perl(File::Path)
+BuildRequires:  perl(strict)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::Perl::Critic)
 BuildRequires:  perl(Test::Pod::Coverage) >= 1.04
 BuildRequires:  perl(Test::Pod) >= 1.14
-BuildRequires:  perl(DBIx::Connector) >= 0.4.5
-BuildRequires:  perl(DBD::SQLite) >= 1.20
+BuildRequires:  perl(warnings)
+BuildRequires:  perl(YAML)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description

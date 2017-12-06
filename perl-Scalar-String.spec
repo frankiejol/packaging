@@ -4,8 +4,10 @@ Release:        1%{?dist}
 Summary:        String aspects of scalars
 License:        GPL+ or Artistic
 URL:            http://search.cpan.org/dist/Scalar-String/
-Source0:        http://www.cpan.org/authors/id/Z/ZE/ZEFRAM/Scalar-String-%{version}.tar.gz
-BuildRequires:  perl >= 5.6
+Source0:        https://www.cpan.org/authors/id/Z/ZE/ZEFRAM/Scalar-String-%{version}.tar.gz
+BuildRequires:  gcc
+BuildRequires:  perl-devel
+BuildRequires:  perl(:VERSION) >= 5.6
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(bytes)
@@ -22,6 +24,8 @@ BuildRequires:  perl(utf8)
 BuildRequires:  perl(warnings)
 BuildRequires:  perl(XSLoader)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Requires:       perl(Exporter)
+Requires:       perl(XSLoader)
 
 %description
 This module is about the string part of plain Perl scalars. A scalar has a

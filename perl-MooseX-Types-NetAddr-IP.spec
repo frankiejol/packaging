@@ -4,17 +4,22 @@ Release:        1%{?dist}
 Summary:        NetAddr::IP related types and coercions for Moose
 License:        GPL+ or Artistic
 URL:            http://search.cpan.org/dist/MooseX-Types-NetAddr-IP/
-Source0:        http://www.cpan.org/authors/id/T/TC/TCAINE/MooseX-Types-NetAddr-IP-%{version}.tar.gz
+Source0:        https://www.cpan.org/authors/id/T/TC/TCAINE/MooseX-Types-NetAddr-IP-%{version}.tar.gz
 BuildArch:      noarch
+BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  perl(Module::Runtime) >= 0.014
 BuildRequires:  perl(Moose) >= 0.41
 BuildRequires:  perl(MooseX::Types) >= 0.19
+BuildRequires:  perl(Moose::Util::TypeConstraints)
 BuildRequires:  perl(namespace::clean) >= 0.08
 BuildRequires:  perl(NetAddr::IP)
+BuildRequires:  perl(strict)
+BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::Exception)
+BuildRequires:  perl(warnings)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description
