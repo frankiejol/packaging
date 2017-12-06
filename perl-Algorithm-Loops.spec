@@ -7,6 +7,8 @@ URL:            http://search.cpan.org/dist/Algorithm-Loops/
 Source0:        https://www.cpan.org/authors/id/T/TY/TYEMQ/Algorithm-Loops-%{version}.tar.gz
 BuildArch:      noarch
 BuildRequires:  make
+BuildRequires:  perl-generators
+BuildRequires:  perl-interpreter
 BuildRequires:  perl(Carp)
 BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  perl(strict)
