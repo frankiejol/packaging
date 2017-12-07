@@ -1,7 +1,7 @@
 %global _dwz_low_mem_die_limit 0
 
 Name:           powerline-go
-Version:        1.8.1
+Version:        1.8.2
 Release:        1%{?dist}
 Summary:        A beautiful and useful low-latency prompt for your shell, written in go
 License:        GPLv3 
@@ -54,10 +54,15 @@ install -p -D -m 0755 ./powerline-go %{buildroot}%{_bindir}/powerline-go
 
 
 %changelog
+* Thu Dec 07 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.8.2-1
+- Upstream release 1.8.2
+
 * Fri Oct 20 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.8.1-1
 - Upstream release 1.8.1
+
 * Sat Sep 02 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.5.1-1
 - Upstream release 1.5.1
+
 * Fri Sep 01 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.5.0-1
 - Initial RPM release
 
