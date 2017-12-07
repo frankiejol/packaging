@@ -9,14 +9,12 @@ BuildArch:      noarch
 BuildRequires:  perl(:VERSION) >= 5.10.1
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
-BuildRequires:  perl(common::sense)
 BuildRequires:  perl(I18N::LangTags) >= 0.35
 BuildRequires:  perl(Module::Build)
 BuildRequires:  perl(Mojolicious) >= 5
 BuildRequires:  perl(strict)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::Mojo)
-BuildRequires:  perl(utf8)
 BuildRequires:  perl(warnings)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 

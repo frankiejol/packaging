@@ -24,7 +24,9 @@ BuildRequires:  perl(Test::Pod) >= 1.00
 BuildRequires:  perl(warnings)
 BuildRequires:  perl(XSLoader)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Requires:       perl(Data::Integer) >= 0.003
 Requires:       perl(Exporter)
+Requires:       perl(Scalar::String)
 Requires:       perl(XSLoader)
 
 %description

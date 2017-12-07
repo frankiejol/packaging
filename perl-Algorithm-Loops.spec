@@ -10,12 +10,18 @@ BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(Carp)
+BuildRequires:  perl(Exporter)
 BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  perl(strict)
 BuildRequires:  perl(Test)
 BuildRequires:  perl(vars)
 BuildRequires:  perl(warnings)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Requires:       perl(Carp)
+Requires:       perl(Exporter)
+Requires:       perl(strict)
+Requires:       perl(vars)
+Requires:       perl(warnings)
 
 %description
 Looping constructs: NestedLoops, MapCar*, Filter, and NextPermute*
