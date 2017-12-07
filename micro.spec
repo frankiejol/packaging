@@ -8,7 +8,7 @@
 %endif
 
 Name:           micro
-Version:        1.3.3
+Version:        1.3.4
 Release:        1%{?dist}
 Summary:        A modern and intuitive terminal-based text editor
 License:        MIT 
@@ -76,6 +76,9 @@ install -p -D -m 0755 ./micro %{buildroot}%{_bindir}/micro
 
 
 %changelog
+* Thu Dec 07 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.3.4-1
+- Upstream release 1.3.4
+
 * Fri Sep 29 2017 Robert-André Mauchin <zebob.m@gmail.com> - 1.3.3-1
 - Initial RPM release
 
