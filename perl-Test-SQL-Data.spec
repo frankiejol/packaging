@@ -23,6 +23,8 @@ BuildRequires:  perl(version)
 BuildRequires:  perl(warnings)
 BuildRequires:  perl(YAML)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Requires:       perl(DBIx::Connector) >= 0.4.5
+Requires:       perl(DBD::SQLite) >= 1.20
 
 %description
 The purpose of Test::SQL::Data is to give your module a clean database to
@@ -39,7 +41,7 @@ the tables of the database.
 %make_build
 
 %install
-make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
+make pure_install DESTDIR=$RPM_BUILD_ROOT
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %check
