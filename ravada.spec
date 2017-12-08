@@ -16,6 +16,7 @@ BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(Authen::Passphrase)
 BuildRequires:  perl(DBD::SQLite)
+BuildRequires:  perl(DBD::MySQL)
 BuildRequires:  perl(DBIx::Connector)
 BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  perl(Image::Magick)
@@ -26,6 +27,7 @@ BuildRequires:  perl(JSON::XS)
 BuildRequires:  perl(Locale::Maketext::Lexicon)
 BuildRequires:  perl(Mojolicious) >= 6.15
 BuildRequires:  perl(Mojolicious::Plugin::I18N)
+BuildRequires:  perl(Mojolicious::Plugin::RenderFile)
 BuildRequires:  perl(Moose)
 BuildRequires:  perl(MooseX::Types::NetAddr::IP)
 BuildRequires:  perl(Net::DNS)
