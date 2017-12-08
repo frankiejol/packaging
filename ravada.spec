@@ -79,8 +79,8 @@ make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 rm $RPM_BUILD_ROOT%{perl_vendorlib}/rvd_front.pl
-install -Dpm 0755 rvd_front.pl $RPM_BUILD_ROOT%{_sbindir}/rvd_back.pl
-install -Dpm 0755 bin/rvd_back.pl  $RPM_BUILD_ROOT%{_sbindir}/rvd_front.pl
+install -Dpm 0755 rvd_front.pl $RPM_BUILD_ROOT%{_sbindir}/rvd_front
+install -Dpm 0755 bin/rvd_back.pl  $RPM_BUILD_ROOT%{_sbindir}/rvd_back
 install -Dpm 0644 etc/ravada.conf $RPM_BUILD_ROOT%{_sysconfdir}/ravada.conf
 install -Dpm 0644 etc/rvd_front.conf.example $RPM_BUILD_ROOT%{_sysconfdir}/rvd_front.conf
 install -Dpm 0644 etc/systemd/rvd_back.service $RPM_BUILD_ROOT%{_unitdir}/rvd_back.service
