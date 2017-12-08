@@ -4,9 +4,9 @@ Release:        1%{?dist}
 Summary:        Hashed passwords/passphrases as objects
 License:        GPL+ or Artistic
 URL:            http://search.cpan.org/dist/Authen-Passphrase/
-Source0:        http://www.cpan.org/authors/id/Z/ZE/ZEFRAM/Authen-Passphrase-%{version}.tar.gz
+Source0:        https://www.cpan.org/authors/id/Z/ZE/ZEFRAM/Authen-Passphrase-%{version}.tar.gz
 BuildArch:      noarch
-BuildRequires:  perl >= 5.6
+BuildRequires:  perl(:VERSION) >= 5.6
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(Authen::DecHpwd) >= 2.003

@@ -4,11 +4,22 @@ Release:        1%{?dist}
 Summary:        Perl xs interface for a portable traditional crypt function
 License:        GPL+ or Artistic
 URL:            http://search.cpan.org/dist/Crypt-UnixCrypt_XS/
-Source0:        http://www.cpan.org/authors/id/B/BO/BORISZ/Crypt-UnixCrypt_XS-%{version}.tar.gz
+Source0:        https://www.cpan.org/authors/id/B/BO/BORISZ/Crypt-UnixCrypt_XS-%{version}.tar.gz
+BuildRequires:  gcc
+BuildRequires:  make
+BuildRequires:  perl-devel
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
+BuildRequires:  perl(Algorithm::Loops)
+BuildRequires:  perl(Encode)
+BuildRequires:  perl(Exporter)
 BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl(strict)
 BuildRequires:  perl(Test::More)
+BuildRequires:  perl(XSLoader)
+BuildRequires:  perl(warnings)
+Requires:       perl(Exporter)
+Requires:       perl(XSLoader)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description
@@ -24,7 +35,7 @@ blocks used in crypt are also supplied separately.
 %make_build
 
 %install
-make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
+make pure_install DESTDIR=$RPM_BUILD_ROOT
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %check

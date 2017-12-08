@@ -4,8 +4,10 @@ Release:        1%{?dist}
 Summary:        DEC VMS password hashing
 License:        GPLv2+
 URL:            http://search.cpan.org/dist/Authen-DecHpwd/
-Source0:        http://www.cpan.org/authors/id/Z/ZE/ZEFRAM/Authen-DecHpwd-%{version}.tar.gz
-BuildRequires:  perl >= 5.6
+Source0:        https://www.cpan.org/authors/id/Z/ZE/ZEFRAM/Authen-DecHpwd-%{version}.tar.gz
+BuildRequires:  gcc
+BuildRequires:  perl-devel
+BuildRequires:  perl(:VERSION) >= 5.6
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(constant)
@@ -22,6 +24,10 @@ BuildRequires:  perl(Test::Pod) >= 1.00
 BuildRequires:  perl(warnings)
 BuildRequires:  perl(XSLoader)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Requires:       perl(Data::Integer) >= 0.003
+Requires:       perl(Exporter)
+Requires:       perl(Scalar::String)
+Requires:       perl(XSLoader)
 
 %description
 This module implements the SYS$HASH_PASSWORD password hashing function from

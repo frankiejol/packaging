@@ -1,6 +1,6 @@
 Name:           rssguard
-Version:        3.5.4
-Release:        3%{?dist}
+Version:        3.5.5
+Release:        1%{?dist}
 Summary:        Simple yet powerful feed reader
 
 # GPLv3+: main program
@@ -66,6 +66,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/com.gith
 
 
 %changelog
+* Thu Dec 07 2017 Robert-André Mauchin <zebob.m@gmail.com> 3.5.5-1
+- Upstream release 3.5.5
+
 * Wed Nov 01 2017 Robert-André Mauchin <zebob.m@gmail.com> 3.5.4-3
 - Unbundle qtsinglecoreapplication
 - Correct licensing

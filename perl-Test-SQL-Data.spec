@@ -6,17 +6,25 @@ License:        GPL+ or Artistic
 URL:            https://github.com/frankiejol/Test-SQL-Data
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildArch:      noarch
+BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
+BuildRequires:  perl(Carp)
+BuildRequires:  perl(DBIx::Connector) >= 0.4.5
+BuildRequires:  perl(DBD::SQLite) >= 1.20
 BuildRequires:  perl(ExtUtils::MakeMaker)
-BuildRequires:  perl(YAML)
+BuildRequires:  perl(File::Path)
+BuildRequires:  perl(strict)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::Perl::Critic)
 BuildRequires:  perl(Test::Pod::Coverage) >= 1.04
 BuildRequires:  perl(Test::Pod) >= 1.14
-BuildRequires:  perl(DBIx::Connector) >= 0.4.5
-BuildRequires:  perl(DBD::SQLite) >= 1.20
+BuildRequires:  perl(version)
+BuildRequires:  perl(warnings)
+BuildRequires:  perl(YAML)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Requires:       perl(DBIx::Connector) >= 0.4.5
+Requires:       perl(DBD::SQLite) >= 1.20
 
 %description
 The purpose of Test::SQL::Data is to give your module a clean database to
@@ -33,7 +41,7 @@ the tables of the database.
 %make_build
 
 %install
-make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
+make pure_install DESTDIR=$RPM_BUILD_ROOT
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %check

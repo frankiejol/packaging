@@ -4,16 +4,18 @@ Release:        1%{?dist}
 Summary:        Internationalization Plugin for Mojolicious
 License:        GPL+ or Artistic
 URL:            http://search.cpan.org/dist/Mojolicious-Plugin-I18N/
-Source0:        http://www.cpan.org/authors/id/S/SH/SHARIFULN/Mojolicious-Plugin-I18N-%{version}.tar.gz
+Source0:        https://www.cpan.org/authors/id/S/SH/SHARIFULN/Mojolicious-Plugin-I18N-%{version}.tar.gz
 BuildArch:      noarch
-BuildRequires:  perl >= 5.10.1
+BuildRequires:  perl(:VERSION) >= 5.10.1
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
 BuildRequires:  perl(I18N::LangTags) >= 0.35
 BuildRequires:  perl(Module::Build)
 BuildRequires:  perl(Mojolicious) >= 5
+BuildRequires:  perl(strict)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Test::Mojo)
+BuildRequires:  perl(warnings)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description
